@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "581563418116",
+    "firebase_url": "https://todolistukk-d299f-default-rtdb.firebaseio.com",
+    "project_id": "todolistukk-d299f",
+    "storage_bucket": "todolistukk-d299f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:581563418116:android:17ed2e015649ff9bc91751",
+        "android_client_info": {
+          "package_name": "com.example.todo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfHQi4J7SP9KzKcb1pJ_gxio4aVGH99hg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
