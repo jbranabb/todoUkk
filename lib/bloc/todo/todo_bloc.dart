@@ -2,18 +2,20 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:todo/model/model.dart';
 
 part 'todo_event.dart';
 part 'todo_state.dart';
+String date = DateFormat.yMMMd().format(DateTime.now());
 
 late DatabaseReference dbref;
 FirebaseAuth auth = FirebaseAuth.instance;
 var uid =  auth.currentUser?.uid;
 class TodoBloc extends Bloc<TodoEvent, TodoState> {
   TodoBloc() : super(TodoInitial()) {
-    dbref = FirebaseDatabase.instance.ref().child('todos/$uid');
+    dbref = FirebaseDatabase.instance.ref().child('todos/$uid/$date');
     on<PostTodo>((event, emit) async {
       try {
         if (event.title.isNotEmpty && event.desc.isNotEmpty) {

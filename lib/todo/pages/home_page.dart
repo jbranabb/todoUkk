@@ -3,7 +3,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo/bloc/login/auth_bloc.dart';
 import 'package:todo/bloc/todo/todo_bloc.dart';
 import 'package:todo/bloc/todo/todo_cubit.dart';
 import 'package:todo/login/pages/login.dart';
@@ -34,14 +33,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
 FirebaseAuth auth = FirebaseAuth.instance;
-var uid =  auth.currentUser?.uid;
-    Query dbref = FirebaseDatabase.instance.ref().child('todos/$uid').orderByChild('priorty');
+    Query dbref = FirebaseDatabase.instance.ref().child('todos/$uid/$date').orderByChild('priorty');
     return Scaffold(
       appBar: AppBar(
         actions: [
           IconButton(onPressed: (){
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:
-             
              Text('Login Sebagai ${auth.currentUser?.email}'),
               behavior: SnackBarBehavior.fixed,
             elevation: 10.0,
