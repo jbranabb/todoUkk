@@ -8,9 +8,9 @@ class Login extends AuthEvent{
   Login({required this.email, required  this.password});
 }
 class Register extends AuthEvent{
+  String displayname;
   String email;
   String password;
   String confirPassword;
-  Register({required this.email, required  this.password, required this.confirPassword});
+  Register({required this.displayname, required this.email, required  this.password, required this.confirPassword});
 }
-class Logout extends AuthEvent{}

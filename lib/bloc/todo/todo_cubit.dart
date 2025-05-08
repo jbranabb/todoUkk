@@ -9,12 +9,12 @@ class TodoCubit extends Cubit<bool>{
 String date = DateFormat.yMMMd().format(DateTime.now());
   FirebaseAuth auth = FirebaseAuth.instance;
   void changetod(String key)async{
+    emit(!state);
   var uid = auth.currentUser?.uid;
   dbref = FirebaseDatabase.instance.ref().child('todos/$uid/$date');
-    Map<String, dynamic>value ={
+    Map<String, dynamic> value ={
       'isCompleted': state
     };
     await dbref.child(key).update(value);
-    emit(!state);
   }
 }

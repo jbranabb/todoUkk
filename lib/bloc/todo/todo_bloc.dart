@@ -18,7 +18,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     dbref = FirebaseDatabase.instance.ref().child('todos/$uid/$date');
     on<PostTodo>((event, emit) async {
       try {
-        if (event.title.isNotEmpty && event.desc.isNotEmpty) {
+        if (event.title.isNotEmpty && event.desc.isNotEmpty && event.rty.isNotEmpty) {
           var tod = Todo(title: event.title, desc: event.desc, rty: event.rty)
               .toJson();
           dbref.push().set(tod);
@@ -41,6 +41,25 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     });
     on<DeleteTodo>((event, emit) {
      dbref.child(event.key).remove(); 
+    });
+    on<Filter>((event, emit) {
+      emit(FilterState(
+        fileterPriorty: event.fileterPriorty,
+        iscompledfilter: event.isCompleted
+      ));
+    });
+    on<DayTime>((event, emit){
+      DateTime now = DateTime.now();
+      var hour = now.hour;
+      if(hour >= 05 && hour <= 11 ){
+        emit(DayTim(e: "Morning"));
+      }else if(hour >=12 && hour <= 15){
+        emit(DayTim(e: "Afternoon"));
+      }else if(hour >= 16 && hour <= 18 ){
+        emit(DayTim(e: "Evening"));
+      }else{
+        emit(DayTim(e: "Night"));
+      }
     });
   }
 }

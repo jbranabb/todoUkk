@@ -4,8 +4,9 @@ class Todo{
   String title;
   String desc;
   String rty;
+  bool? isCompleted;
   
-  Todo({required this.title, required this.desc, required this.rty});
+  Todo({required this.title, required this.desc, required this.rty, this.isCompleted });
 
   //json ke aplikasi
   factory Todo.fromJson(Map<String, dynamic> json){
@@ -18,6 +19,7 @@ class Todo{
     'title': title,
     'desc': desc,
     'priorty': rty,
+    'isCompleted': false,
     'datetime': DateFormat('HH:mm').format(DateTime.now()).toString()
   };
 }

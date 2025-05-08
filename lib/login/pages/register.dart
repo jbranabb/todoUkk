@@ -8,6 +8,7 @@ import 'package:todo/todo/pages/home_page.dart';
 
 class RegisterPage extends StatelessWidget {
   TextEditingController email = TextEditingController();
+  TextEditingController displayname = TextEditingController();
   TextEditingController pass = TextEditingController();
   TextEditingController passCon = TextEditingController();
   RegisterPage({super.key});
@@ -19,7 +20,7 @@ class RegisterPage extends StatelessWidget {
           child: Card(
             shadowColor: Colors.blue,
             child: SizedBox(
-              height: 480,
+              height: 540,
               width: 300,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -46,6 +47,14 @@ class RegisterPage extends StatelessWidget {
                   ),
                   const SizedBox(
                     height: 10,
+                  ),
+                  MyTextfieldlogin(
+                    controller: displayname,
+                    hint: 'Username',
+                    obscure: false,
+                  ),
+                  const SizedBox(
+                    height: 15,
                   ),
                   MyTextfieldlogin(
                     controller: email,
@@ -100,6 +109,7 @@ class RegisterPage extends StatelessWidget {
                   ElevatedButton(
                       onPressed: () {
                         context.read<AuthBloc>().add(Register(
+                            displayname: displayname.text,
                             email: email.text,
                             password: pass.text,
                             confirPassword: passCon.text));

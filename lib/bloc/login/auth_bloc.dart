@@ -2,9 +2,7 @@
 
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:meta/meta.dart';
-import 'package:todo/bloc/todo/todo_bloc.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -22,8 +20,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             email: event.email, password: event.password);
         print('masuk');
         emit(AuthLoaded());
-        }
-      } on FirebaseAuthException catch (e) {
+        }      } on FirebaseAuthException catch (e) {
         print('Error Code : ${e.code}');
         if (e.code == 'user-not-found') {
           print('user not found');
@@ -49,10 +46,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<Register>((event, emit) async {
       try {
         emit(AuthLoading());
-        if(event.email.isNotEmpty || event.password.isNotEmpty || event.confirPassword.isNotEmpty){
+        if(event.email.isNotEmpty || event.password.isNotEmpty || event.confirPassword.isNotEmpty || event.displayname.isNotEmpty){
           if(event.password == event.confirPassword){
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: event.email, password: event.password); 
+       await FirebaseAuth.instance.currentUser?.updateDisplayName(event.displayname);
+            print('Name :${FirebaseAuth.instance.currentUser?.displayName}');
         emit(AuthLoaded());
           }else{
           emit(AuthErorr('Passwords Tidak Sama'));
