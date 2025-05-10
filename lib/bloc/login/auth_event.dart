@@ -14,3 +14,7 @@ class Register extends AuthEvent{
   String confirPassword;
   Register({required this.displayname, required this.email, required  this.password, required this.confirPassword});
 }
+class LogOut extends AuthEvent{
+  BuildContext context;
+  LogOut(this.context);
+}

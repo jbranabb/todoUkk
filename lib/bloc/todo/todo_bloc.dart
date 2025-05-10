@@ -47,19 +47,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
         fileterPriorty: event.fileterPriorty,
         iscompledfilter: event.isCompleted
       ));
-    });
-    on<DayTime>((event, emit){
-      DateTime now = DateTime.now();
-      var hour = now.hour;
-      if(hour >= 05 && hour <= 11 ){
-        emit(DayTim(e: "Morning"));
-      }else if(hour >=12 && hour <= 15){
-        emit(DayTim(e: "Afternoon"));
-      }else if(hour >= 16 && hour <= 18 ){
-        emit(DayTim(e: "Evening"));
-      }else{
-        emit(DayTim(e: "Night"));
-      }
+     
     });
   }
 }

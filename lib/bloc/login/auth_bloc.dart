@@ -2,25 +2,31 @@
 
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
+import 'package:todo/bloc/todo/todo_bloc.dart';
+import 'package:todo/login/pages/login.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc() : super(AuthInitial()) {
+  AuthBloc() : super(UnAuth()) {
     on<Login>((event, emit) async {
       print('Login Ke triger');
       emit(AuthLoading());
       try {
-        if(event.password.length <=6 ){
+        if (event.password.length <= 6) {
           emit(AuthErorr('Password Harus 6 Karakter'));
-        }else{
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
-            email: event.email, password: event.password);
-        print('masuk');
-        emit(AuthLoaded());
-        }      } on FirebaseAuthException catch (e) {
+        } else {
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+              email: event.email, password: event.password);
+          print('masuk');
+          emit(AuthLoaded());
+        }
+      } on FirebaseAuthException catch (e) {
         print('Error Code : ${e.code}');
         if (e.code == 'user-not-found') {
           print('user not found');
@@ -34,11 +40,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         } else if (e.code == 'too-many-requests') {
           print('too many request');
           emit(AuthErorr('Terlalu banyak percobaan. Coba beberapa saat lagi.'));
-        }else if(e.code == 'invalid-credential'){
+        } else if (e.code == 'invalid-credential') {
           print('credential invalid');
           emit(AuthErorr('Passwords Salah'));
-        } 
-        else {
+        } else {
           emit(AuthErorr('Something Went Wrong: ${e.message ?? "Unknown"}'));
         }
       }
@@ -46,17 +51,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<Register>((event, emit) async {
       try {
         emit(AuthLoading());
-        if(event.email.isNotEmpty || event.password.isNotEmpty || event.confirPassword.isNotEmpty || event.displayname.isNotEmpty){
-          if(event.password == event.confirPassword){
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: event.email, password: event.password); 
-       await FirebaseAuth.instance.currentUser?.updateDisplayName(event.displayname);
+        if (event.email.isNotEmpty ||
+            event.password.isNotEmpty ||
+            event.confirPassword.isNotEmpty ||
+            event.displayname.isNotEmpty) {
+          if (event.password == event.confirPassword) {
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                email: event.email, password: event.password);
+            await FirebaseAuth.instance.currentUser
+                ?.updateDisplayName(event.displayname);
             print('Name :${FirebaseAuth.instance.currentUser?.displayName}');
-        emit(AuthLoaded());
-          }else{
-          emit(AuthErorr('Passwords Tidak Sama'));
+            emit(AuthLoading());
+            print('loading');
+            emit(AuthLoaded());
+            print('loaded');
+          } else {
+            emit(AuthErorr('Passwords Tidak Sama'));
           }
-        }else{
+        } else {
           emit(AuthErorr('Mohon Isi Semua Field Yang Kosong'));
         }
       } on FirebaseAuthException catch (e) {
@@ -73,6 +85,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthErorr('Terjadi error: ${e.message}'));
         }
       }
+    });
+    on<LogOut>((event, emit)async {
+      var user = FirebaseAuth.instance.currentUser;
+    await auth
+          .signOut()
+          .then((value) {
+          emit(UnAuth());
+          print(user);
+          print('unauth');
+          Navigator.of(event.context).push(MaterialPageRoute(
+                builder: (context) => LoginPage(),
+              ));
+          } 
+              );
     });
   }
 }

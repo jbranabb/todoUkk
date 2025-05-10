@@ -9,7 +9,9 @@ import 'package:todo/bloc/todo/todo_bloc.dart';
 import 'package:todo/bloc/todo/todo_cubit.dart';
 import 'package:todo/firebase_options.dart';
 import 'package:todo/login/pages/login.dart';
+import 'package:todo/login/pages/register.dart';
 import 'package:todo/theme.dart';
+import 'package:todo/todo/pages/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,12 +33,13 @@ class MyApp extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-      return BlocBuilder<ThemeCubit, bool>(
-        builder: (context, state) =>  MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: state ? dark :light,
-        home: LoginPage(),
-      ),
-    );
+         return BlocBuilder<ThemeCubit, bool> (
+          builder: (context, state) => 
+            MaterialApp(
+              debugShowCheckedModeBanner: false,
+              theme:  state ? dark : light,
+             home: auth.currentUser != null ? HomePage() : LoginPage()
+                   ),
+         );
+        } 
   }
-}
