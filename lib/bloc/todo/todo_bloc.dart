@@ -49,5 +49,18 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       ));
      
     });
+    on<ListDate>((event, emit)async {
+      try{
+        var snapshot = await FirebaseDatabase.instance.ref().child('todos/$uid').get();
+        if(snapshot.exists){
+          print('yes');
+        }else{
+          print('NO');
+
+        }
+      }catch(e){
+
+      }
+    });
   }
 }
