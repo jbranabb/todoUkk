@@ -16,7 +16,7 @@ class DateCubit extends Cubit<List<String>> {
                 .keys
                 .cast<String>()
                 .toList()
-              ..sort((a, b) => a.compareTo(b)
+              ..sort((a, b) => b.compareTo(a)
                  );
             emit(dates);
           } else {

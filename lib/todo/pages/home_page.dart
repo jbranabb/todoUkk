@@ -2,10 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
@@ -15,8 +12,6 @@ import 'package:todo/bloc/cuit/theme_cubit.dart';
 import 'package:todo/bloc/login/auth_bloc.dart';
 import 'package:todo/bloc/todo/todo_bloc.dart';
 import 'package:todo/bloc/todo/todo_cubit.dart';
-import 'package:todo/login/pages/login.dart';
-import 'package:todo/todo/pages/filter_page.dart';
 
 late DatabaseReference dbref;
 FirebaseAuth auth = FirebaseAuth.instance;
@@ -88,12 +83,6 @@ class _HomePageState extends State<HomePage> {
               }
             },
             itemBuilder: (context) => [
-              const PopupMenuItem(
-                  value: 'profile',
-                  child: ListTile(
-                    leading: Icon(Icons.person),
-                    title: Text('Profile'),
-                  )),
               const PopupMenuItem(
                   value: 'logout',
                   child: ListTile(
@@ -196,7 +185,9 @@ class _HomePageState extends State<HomePage> {
                                 height: 45,
                                 // color: Colors.blue,
                                 child:  Center(
-                                  child: Icon(Icons.edit_calendar_outlined, color: Theme.of(context).colorScheme.onPrimary),
+                                  child: Icon(Icons.edit_calendar_outlined, color:
+                                  dateClick == date ?
+                                   Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.secondary),
                                 ),
                               )
                               
@@ -227,7 +218,19 @@ class _HomePageState extends State<HomePage> {
                             child: Container(
                               height: 10,
                               width: 10,
-                              child: Center(child: Text(dates[index].substring(0, 6), textAlign: TextAlign.center,style: TextStyle(fontSize: 15, color: Theme.of(context).colorScheme.onPrimary),)),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                              // color: dateClick == dates[index] ? Theme.of(context).colorScheme.secondary :Theme.of(context).colorScheme.primary , 
+                              ),
+                              child: Center(child: Text(dates[index].substring(0, 6), textAlign: TextAlign.center,style: 
+                              dateClick == dates[index] ? TextStyle(fontSize: 15, 
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.onPrimary):
+                              TextStyle(fontSize: 13,
+                              fontWeight: FontWeight.normal,
+                               color: Theme.of(context).colorScheme.onPrimary),
+                              
+                              )),
                             ),
                           ),
                         ),
@@ -247,7 +250,7 @@ class _HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.all(8.0),
                       child: Align(
                           alignment: Alignment.centerLeft,
-                          child: Text("$dateW $listCount",
+                          child: Text("$dateClick $listCount",
                               style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -429,7 +432,6 @@ class _HomePageState extends State<HomePage> {
                             // print('empty');
                           }
                         }
-
                         listCount = sortedList.length;
                         return ListView.builder(
                           itemCount: filteredList.length,
@@ -496,134 +498,159 @@ class _HomePageState extends State<HomePage> {
                                     );
                                   },
                                   child: Card(
-                                    child: ListTile(
-                                      onTap: () {
-                                        context
-                                            .read<TodoCubit>()
-                                            .changetod(key);
-                                      },
-                                      onLongPress: () {
-                                        titleC.text = tod['title'];
-                                        desC.text = tod['desc'];
-                                        rty.text = tod['priorty'];
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) => AlertDialog(
-                                            title: MyText(text: "Update Todo"),
-                                            content: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                MyTextField(
-                                                    controller: titleC,
-                                                    hint: 'Judul'),
-                                                const SizedBox(height: 10),
-                                                MyTextField(
-                                                    controller: desC,
-                                                    hint: 'Deskripsi'),
-                                                DropdownButtonFormField(
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .onPrimary),
-                                                  decoration: InputDecoration(
-                                                      enabledBorder: UnderlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .colorScheme
-                                                                  .secondary)),
-                                                      focusedBorder: UnderlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .colorScheme
-                                                                  .primary))),
-                                                  hint: const Text(
-                                                      'Pilih Priorty'),
-                                                  isExpanded: true,
-                                                  value: tod['priorty'],
-                                                  items: priorty
-                                                      .map((e) =>
-                                                          DropdownMenuItem(
-                                                              value: e,
-                                                              child: Text(e)))
-                                                      .toList(),
-                                                  onChanged: (value) {
-                                                    rty.text = value.toString();
-                                                  },
-                                                )
+                                    child: BlocBuilder<DateCubit, List<String>>(
+                                      builder: (context, dates) {
+                                        if(dateClick != date){
+                                         return ListTile(
+                                          title: Text(tod['title'], style: TextStyle(
+                                              decoration:
+                                                  (tod['isCompleted'] == true)
+                                                      ? TextDecoration.lineThrough
+                                                      : TextDecoration.none),),
+                                          subtitle: Text(tod['desc'], style: TextStyle(
+                                              decoration:
+                                                  (tod['isCompleted'] == true)
+                                                      ? TextDecoration.lineThrough
+                                                      : TextDecoration.none),),
+                                                      trailing: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            buildPriorityWidget(tod['priorty']),
+                                            Text(tod['datetime']),
+                                          ],
+                                        ),
+                                         );
+                                        }
+                                      return ListTile(
+                                        onTap: () {
+                                          context
+                                              .read<TodoCubit>()
+                                              .changetod(key);
+                                        },
+                                        onLongPress: () {
+                                          titleC.text = tod['title'];
+                                          desC.text = tod['desc'];
+                                          rty.text = tod['priorty'];
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                              title: MyText(text: "Update Todo"),
+                                              content: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  MyTextField(
+                                                      controller: titleC,
+                                                      hint: 'Judul'),
+                                                  const SizedBox(height: 10),
+                                                  MyTextField(
+                                                      controller: desC,
+                                                      hint: 'Deskripsi'),
+                                                  DropdownButtonFormField(
+                                                    style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .onPrimary),
+                                                    decoration: InputDecoration(
+                                                        enabledBorder: UnderlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .colorScheme
+                                                                    .secondary)),
+                                                        focusedBorder: UnderlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .colorScheme
+                                                                    .primary))),
+                                                    hint: const Text(
+                                                        'Pilih Priorty'),
+                                                    isExpanded: true,
+                                                    value: tod['priorty'],
+                                                    items: priorty
+                                                        .map((e) =>
+                                                            DropdownMenuItem(
+                                                                value: e,
+                                                                child: Text(e)))
+                                                        .toList(),
+                                                    onChanged: (value) {
+                                                      rty.text = value.toString();
+                                                    },
+                                                  )
+                                                ],
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context).pop();
+                                                      titleC.clear();
+                                                      desC.clear();
+                                                    },
+                                                    child: MyText(
+                                                      text: 'No',
+                                                    )),
+                                                TextButton(
+                                                    onPressed: () {
+                                                      context
+                                                          .read<TodoBloc>()
+                                                          .add(UpdateTodo(
+                                                              title: titleC.text,
+                                                              desc: desC.text,
+                                                              rty: rty.text,
+                                                              key: key));
+                                                      Navigator.of(context).pop();
+                                                      if (titleC.text ==
+                                                              tod['title'] &&
+                                                          desC.text ==
+                                                              tod['desc'] &&
+                                                          rty.text ==
+                                                              tod['priorty']) {
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                                const SnackBar(
+                                                          content: Text(
+                                                              'Tidak Ada Yang Berubah'),
+                                                          duration: Durations
+                                                              .extralong3,
+                                                          backgroundColor:
+                                                              Colors.orange,
+                                                        ));
+                                                      }
+                                                      titleC.clear();
+                                                      desC.clear();
+                                                    },
+                                                    child: MyText(text: 'Yes')),
                                               ],
                                             ),
-                                            actions: [
-                                              TextButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                    titleC.clear();
-                                                    desC.clear();
-                                                  },
-                                                  child: MyText(
-                                                    text: 'No',
-                                                  )),
-                                              TextButton(
-                                                  onPressed: () {
-                                                    context
-                                                        .read<TodoBloc>()
-                                                        .add(UpdateTodo(
-                                                            title: titleC.text,
-                                                            desc: desC.text,
-                                                            rty: rty.text,
-                                                            key: key));
-                                                    Navigator.of(context).pop();
-                                                    if (titleC.text ==
-                                                            tod['title'] &&
-                                                        desC.text ==
-                                                            tod['desc'] &&
-                                                        rty.text ==
-                                                            tod['priorty']) {
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(
-                                                              const SnackBar(
-                                                        content: Text(
-                                                            'Tidak Ada Yang Berubah'),
-                                                        duration: Durations
-                                                            .extralong3,
-                                                        backgroundColor:
-                                                            Colors.orange,
-                                                      ));
-                                                    }
-                                                    titleC.clear();
-                                                    desC.clear();
-                                                  },
-                                                  child: MyText(text: 'Yes')),
-                                            ],
-                                          ),
-                                        );
+                                          );
+                                        },
+                                        leading: null,
+                                        title: Text(
+                                          tod['title'],
+                                          style: TextStyle(
+                                              decoration:
+                                                  (tod['isCompleted'] == true)
+                                                      ? TextDecoration.lineThrough
+                                                      : TextDecoration.none),
+                                        ),
+                                        subtitle: Text(
+                                          tod['desc'],
+                                          style: TextStyle(
+                                              decoration:
+                                                  (tod['isCompleted'] == true)
+                                                      ? TextDecoration.lineThrough
+                                                      : TextDecoration.none),
+                                        ),
+                                        trailing: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            buildPriorityWidget(tod['priorty']),
+                                            Text(tod['datetime']),
+                                          ],
+                                        ),
+                                      );
                                       },
-                                      leading: null,
-                                      title: Text(
-                                        tod['title'],
-                                        style: TextStyle(
-                                            decoration:
-                                                (tod['isCompleted'] == true)
-                                                    ? TextDecoration.lineThrough
-                                                    : TextDecoration.none),
-                                      ),
-                                      subtitle: Text(
-                                        tod['desc'],
-                                        style: TextStyle(
-                                            decoration:
-                                                (tod['isCompleted'] == true)
-                                                    ? TextDecoration.lineThrough
-                                                    : TextDecoration.none),
-                                      ),
-                                      trailing: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          buildPriorityWidget(tod['priorty']),
-                                          Text(tod['datetime']),
-                                        ],
-                                      ),
                                     ),
                                   ),
                                 ),
@@ -676,129 +703,137 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Container(
-        height: 50,
-        width: 200,
-        decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.secondary,
-            borderRadius: BorderRadius.circular(20)),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              FloatingActionButton(onPressed: () {}, child: Icon(Icons.search)),
-              FloatingActionButton(
-                backgroundColor: Theme.of(context).colorScheme.onPrimary,
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      backgroundColor: Theme.of(context).colorScheme.secondary,
-                      title: Text(
-                        'Tambahkan Todo Baru',
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.onPrimary),
-                      ),
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          MyTextField(controller: titleC, hint: 'Judul'),
-                          const SizedBox(height: 15),
-                          MyTextField(controller: desC, hint: 'Deskripsi'),
-                          DropdownButtonFormField(
-                            style: TextStyle(
-                                color: Theme.of(context).colorScheme.onPrimary),
-                            decoration: InputDecoration(
-                                enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .surface)),
-                                focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary))),
-                            hint: const Text('Pilih Priorty'),
-                            isExpanded: true,
-                            value: iselected,
-                            items: priorty
-                                .map((e) =>
-                                    DropdownMenuItem(value: e, child: Text(e)))
-                                .toList(),
-                            onChanged: (value) {
-                              rty.text = value.toString();
+      floatingActionButton: BlocBuilder<DateCubit, List<String>>(
+        builder: (context, state) {
+          if(dateClick != date){
+            return Container();
+          }
+
+        return Container(
+          height: 50,
+          width: 200,
+          decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.secondary,
+              borderRadius: BorderRadius.circular(20)),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                FloatingActionButton(onPressed: () {}, child: Icon(Icons.search)),
+                FloatingActionButton(
+                  backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        backgroundColor: Theme.of(context).colorScheme.secondary,
+                        title: Text(
+                          'Tambahkan Todo Baru',
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary),
+                        ),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            MyTextField(controller: titleC, hint: 'Judul'),
+                            const SizedBox(height: 15),
+                            MyTextField(controller: desC, hint: 'Deskripsi'),
+                            DropdownButtonFormField(
+                              style: TextStyle(
+                                  color: Theme.of(context).colorScheme.onPrimary),
+                              decoration: InputDecoration(
+                                  enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .surface)),
+                                  focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary))),
+                              hint: const Text('Pilih Priorty'),
+                              isExpanded: true,
+                              value: iselected,
+                              items: priorty
+                                  .map((e) =>
+                                      DropdownMenuItem(value: e, child: Text(e)))
+                                  .toList(),
+                              onChanged: (value) {
+                                rty.text = value.toString();
+                              },
+                            )
+                          ],
+                        ),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                titleC.clear();
+                                desC.clear();
+                                Navigator.of(context).pop();
+                              },
+                              child: MyText(
+                                text: "No",
+                              )),
+                          BlocConsumer<TodoBloc, TodoState>(
+                            builder: (context, state) => TextButton(
+                                onPressed: () {
+                                  context.read<TodoBloc>().add(PostTodo(
+                                      title: titleC.text,
+                                      desc: desC.text,
+                                      rty: rty.text));
+                                  Navigator.of(context).pop();
+                                  titleC.clear();
+                                  desC.clear();
+                                },
+                                child: MyText(text: 'Yes')),
+                            listener: (context, state) {
+                              if (state is Todoloaded) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  content: Text('Berhasil Menambahkan Data'),
+                                  duration: Durations.extralong2,
+                                  backgroundColor: Colors.green,
+                                ));
+                              } else if (state is TodoErorr) {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: MyText(text: 'Terjadi Kesalahan'),
+                                    content: MyText(text: state.e),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: MyText(text: "Ya, Mengerti"))
+                                    ],
+                                  ),
+                                );
+                              }
                             },
                           )
                         ],
                       ),
-                      actions: [
-                        TextButton(
-                            onPressed: () {
-                              titleC.clear();
-                              desC.clear();
-                              Navigator.of(context).pop();
-                            },
-                            child: MyText(
-                              text: "No",
-                            )),
-                        BlocConsumer<TodoBloc, TodoState>(
-                          builder: (context, state) => TextButton(
-                              onPressed: () {
-                                context.read<TodoBloc>().add(PostTodo(
-                                    title: titleC.text,
-                                    desc: desC.text,
-                                    rty: rty.text));
-                                Navigator.of(context).pop();
-                                titleC.clear();
-                                desC.clear();
-                              },
-                              child: MyText(text: 'Yes')),
-                          listener: (context, state) {
-                            if (state is Todoloaded) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                content: Text('Berhasil Menambahkan Data'),
-                                duration: Durations.extralong2,
-                                backgroundColor: Colors.green,
-                              ));
-                            } else if (state is TodoErorr) {
-                              showDialog(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                  title: MyText(text: 'Terjadi Kesalahan'),
-                                  content: MyText(text: state.e),
-                                  actions: [
-                                    TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: MyText(text: "Ya, Mengerti"))
-                                  ],
-                                ),
-                              );
-                            }
-                          },
-                        )
-                      ],
-                    ),
-                  );
-                },
-                child: Icon(
-                  Icons.add,
-                  size: 28,
-                  weight: 10,
-                  color: Theme.of(context).colorScheme.primary,
+                    );
+                  },
+                  child: Icon(
+                    Icons.add,
+                    size: 28,
+                    weight: 10,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
-              ),
-              FloatingActionButton(
-                onPressed: () {},
-                child: Icon(Icons.checklist_rtl_rounded),
-              )
-            ],
+                FloatingActionButton(
+                  onPressed: () {},
+                  child: Icon(Icons.checklist_rtl_rounded),
+                )
+              ],
+            ),
           ),
-        ),
+        );
+        },
       ),
     );
   }

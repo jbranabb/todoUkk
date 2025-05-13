@@ -38,6 +38,7 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^9.1.0
   flutter_svg: ^2.1.0
+  google_fonts: ^6.2.1
   intl: ^0.20.2
 
 dev_dependencies:
@@ -61,7 +62,6 @@ flutter:
     - assets/svg/add_white.svg
     - assets/svg/no_dark.svg
     - assets/svg/no_white.svg
-    
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
   # For details regarding adding assets from package dependencies, see

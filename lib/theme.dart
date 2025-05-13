@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 ThemeData light = ThemeData(
     brightness: Brightness.light,
+    textTheme: GoogleFonts.interTextTheme(),
     colorScheme: ColorScheme(
       primary: Colors.white, // kepake
       onPrimary: Colors.black, //  kepake 
@@ -17,6 +19,7 @@ ThemeData light = ThemeData(
 
 ThemeData dark = ThemeData(
     brightness: Brightness.dark,
+    textTheme: GoogleFonts.interTextTheme(),
     colorScheme: ColorScheme(
       primary: Colors.black,
       onPrimary: Colors.white,

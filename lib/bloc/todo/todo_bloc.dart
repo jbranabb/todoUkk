@@ -8,7 +8,7 @@ import 'package:todo/model/model.dart';
 
 part 'todo_event.dart';
 part 'todo_state.dart';
-String date = DateFormat.yMMMd().format(DateTime.now());
+String date = DateFormat('dd MMM yyyy').format(DateTime.now());
 
 late DatabaseReference dbref;
 FirebaseAuth auth = FirebaseAuth.instance;
