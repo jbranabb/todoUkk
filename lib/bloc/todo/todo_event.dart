@@ -31,7 +31,7 @@ class DeleteTodo extends TodoEvent{
 class Filter extends TodoEvent{
   final String? fileterPriorty;
   final bool? isCompleted;
-  Filter({this.fileterPriorty, this.isCompleted});
+  Filter({ this.fileterPriorty, this.isCompleted});
   
   @override
   List<Object?> get props => [fileterPriorty, isCompleted];

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/bloc/bloc/daytim_bloc.dart';
 import 'package:todo/bloc/cuit/date_cubit.dart';
+import 'package:todo/bloc/cuit/search_cubit.dart';
 import 'package:todo/bloc/cuit/theme_cubit.dart';
 import 'package:todo/bloc/login/auth_bloc.dart';
 import 'package:todo/bloc/todo/todo_bloc.dart';
@@ -26,6 +27,8 @@ void main() async {
       BlocProvider(create: (context) => DaytimBloc(),),
       BlocProvider(create: (context) => ThemeCubit(),),
       BlocProvider(create: (context) => DateCubit(),),
+      BlocProvider(create: (context) => SearchCubit(),),
+      BlocProvider(create: (context) => TextSearchCubit(),),
     ],
     child: const MyApp()));
 }
