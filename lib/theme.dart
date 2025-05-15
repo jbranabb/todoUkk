@@ -30,6 +30,6 @@ ThemeData dark = ThemeData(
       surface: Colors.grey.shade300,
       onSurface: Colors.grey.shade700,
       tertiary: Colors.red,
-      onTertiary: Colors.grey.shade300,
+      onTertiary: Colors.grey.shade400,
       brightness: Brightness.dark,
     ));

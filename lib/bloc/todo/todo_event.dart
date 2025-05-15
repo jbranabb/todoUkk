@@ -12,9 +12,7 @@ class PostTodo  extends TodoEvent{
   String desc;
   String rty;
   PostTodo({required this.title, required this.desc, required this.rty});
-  
-  @override
- List<Object> get props => [title, desc, rty];
+
 }
 class  UpdateTodo extends TodoEvent{
   String title;
@@ -29,9 +27,6 @@ class  UpdateTodo extends TodoEvent{
 class DeleteTodo extends TodoEvent{
   String key;
   DeleteTodo(this.key);
-
-  @override
-  List<Object> get props => [key];
 }
 class Filter extends TodoEvent{
   final String? fileterPriorty;

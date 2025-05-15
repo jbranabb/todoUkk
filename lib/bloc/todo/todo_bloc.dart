@@ -22,11 +22,14 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
           var tod = Todo(title: event.title, desc: event.desc, rty: event.rty)
               .toJson();
           dbref.push().set(tod);
+          emit(TodoInitial());
           emit(Todoloaded());
         } else {
+          emit(TodoInitial());
           emit(TodoErorr('Harus Isi Semua field'));
         }
       } catch (e) {
+        emit(TodoInitial());
         emit(TodoErorr(e.toString()));
       }
     });

@@ -2,11 +2,11 @@ import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:intl/intl.dart';
+import 'package:todo/bloc/todo/todo_bloc.dart';
 
 class TodoCubit extends Cubit<bool>{
   TodoCubit() : super(true);
   late DatabaseReference dbref;
-String date = DateFormat.yMMMd().format(DateTime.now());
   FirebaseAuth auth = FirebaseAuth.instance;
   void changetod(String key)async{
     emit(!state);
