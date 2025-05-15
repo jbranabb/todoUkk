@@ -440,6 +440,8 @@ class _HomePageState extends State<HomePage> {
                     )
                   ],
                 )),
+
+            // fetch data
             Container(
               height: 700,
               child: BlocBuilder<TodoBloc, TodoState>(
@@ -484,7 +486,7 @@ class _HomePageState extends State<HomePage> {
                                 .where((element) =>
                                     element.value['isCompleted'] != false)
                                 .toList();
-                          } 
+                          }
                         }
                         listCount = sortedList.length;
                         return ListView.builder(
@@ -507,26 +509,23 @@ class _HomePageState extends State<HomePage> {
                                         title: Text(
                                           tod['title'],
                                           style: TextStyle(
-                                              decoration:
-                                                  (tod['isCompleted'] == true)
-                                                      ? TextDecoration
-                                                          .lineThrough
-                                                      : TextDecoration.none),
+                                              decoration: (tod['isCompleted'] ==
+                                                      true)
+                                                  ? TextDecoration.lineThrough
+                                                  : TextDecoration.none),
                                         ),
                                         subtitle: Text(
                                           tod['desc'],
                                           style: TextStyle(
-                                              decoration:
-                                                  (tod['isCompleted'] == true)
-                                                      ? TextDecoration
-                                                          .lineThrough
-                                                      : TextDecoration.none),
+                                              decoration: (tod['isCompleted'] ==
+                                                      true)
+                                                  ? TextDecoration.lineThrough
+                                                  : TextDecoration.none),
                                         ),
                                         trailing: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            buildPriorityWidget(
-                                                tod['priorty']),
+                                            buildPriorityWidget(tod['priorty']),
                                             Text(tod['datetime']),
                                           ],
                                         ),
@@ -540,8 +539,7 @@ class _HomePageState extends State<HomePage> {
                                       return showDialog(
                                         context: context,
                                         builder: (context) => AlertDialog(
-                                          title:
-                                              const Text('Hapus Item ini?'),
+                                          title: const Text('Hapus Item ini?'),
                                           content: const Text(
                                               'Apakah Kamu Yakin Ingin Menghapus Item Ini?'),
                                           actions: [
@@ -558,12 +556,10 @@ class _HomePageState extends State<HomePage> {
                                                   context
                                                       .read<TodoBloc>()
                                                       .add(DeleteTodo(key));
-                                                  ScaffoldMessenger.of(
-                                                          context)
+                                                  ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
                                                           backgroundColor:
-                                                              Theme.of(
-                                                                      context)
+                                                              Theme.of(context)
                                                                   .colorScheme
                                                                   .error,
                                                           duration: Durations
@@ -577,8 +573,7 @@ class _HomePageState extends State<HomePage> {
                                                                     .onError),
                                                           )));
                                                 },
-                                                child:
-                                                    const Text('Ya, Hapus')),
+                                                child: const Text('Ya, Hapus')),
                                           ],
                                         ),
                                       );
@@ -600,8 +595,7 @@ class _HomePageState extends State<HomePage> {
                                               title:
                                                   MyText(text: "Update Todo"),
                                               content: Column(
-                                                mainAxisSize:
-                                                    MainAxisSize.min,
+                                                mainAxisSize: MainAxisSize.min,
                                                 children: [
                                                   MyTextField(
                                                       controller: titleC,
@@ -612,10 +606,9 @@ class _HomePageState extends State<HomePage> {
                                                       hint: 'Deskripsi'),
                                                   DropdownButtonFormField(
                                                     style: TextStyle(
-                                                        color:
-                                                            Theme.of(context)
-                                                                .colorScheme
-                                                                .onPrimary),
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .onPrimary),
                                                     decoration: InputDecoration(
                                                         enabledBorder: UnderlineInputBorder(
                                                             borderSide: BorderSide(
@@ -637,8 +630,7 @@ class _HomePageState extends State<HomePage> {
                                                         .map((e) =>
                                                             DropdownMenuItem(
                                                                 value: e,
-                                                                child:
-                                                                    Text(e)))
+                                                                child: Text(e)))
                                                         .toList(),
                                                     onChanged: (value) {
                                                       rty.text =
@@ -688,8 +680,7 @@ class _HomePageState extends State<HomePage> {
                                                           duration: Durations
                                                               .extralong3,
                                                           backgroundColor:
-                                                              Theme.of(
-                                                                      context)
+                                                              Theme.of(context)
                                                                   .colorScheme
                                                                   .secondary,
                                                         ));
@@ -697,38 +688,37 @@ class _HomePageState extends State<HomePage> {
                                                       titleC.clear();
                                                       desC.clear();
                                                     },
-                                                    child:
-                                                        MyText(text: 'Yes')),
+                                                    child: MyText(text: 'Yes')),
                                               ],
                                             ),
                                           );
                                         },
-                                        leading: selected ? Checkbox(value: checkboxSelected , onChanged: (value) {
-                                          
-                                        },) : null,
+                                        leading: selected
+                                            ? Checkbox(
+                                                value: checkboxSelected,
+                                                onChanged: (value) {},
+                                              )
+                                            : null,
                                         title: Text(
                                           tod['title'],
                                           style: TextStyle(
-                                              decoration:
-                                                  (tod['isCompleted'] == true)
-                                                      ? TextDecoration
-                                                          .lineThrough
-                                                      : TextDecoration.none),
+                                              decoration: (tod['isCompleted'] ==
+                                                      true)
+                                                  ? TextDecoration.lineThrough
+                                                  : TextDecoration.none),
                                         ),
                                         subtitle: Text(
                                           tod['desc'],
                                           style: TextStyle(
-                                              decoration:
-                                                  (tod['isCompleted'] == true)
-                                                      ? TextDecoration
-                                                          .lineThrough
-                                                      : TextDecoration.none),
+                                              decoration: (tod['isCompleted'] ==
+                                                      true)
+                                                  ? TextDecoration.lineThrough
+                                                  : TextDecoration.none),
                                         ),
                                         trailing: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            buildPriorityWidget(
-                                                tod['priorty']),
+                                            buildPriorityWidget(tod['priorty']),
                                             Text(tod['datetime']),
                                           ],
                                         ),
@@ -784,6 +774,8 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+
+      // tambah data
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: BlocBuilder<DateCubit, List<String>>(
         builder: (context, state) {
@@ -885,15 +877,16 @@ class _HomePageState extends State<HomePage> {
                                             onPressed: () {
                                               Navigator.of(context).pop();
                                             },
-                                          child: MyText(text: "Ya, Mengerti"))
+                                            child: MyText(text: "Ya, Mengerti"))
                                       ],
                                     ),
                                   );
-                                }else if(state is Todoloaded){
+                                } else if (state is Todoloaded) {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-behavior: SnackBarBehavior.floating,
-                                      content: Text('Nambah data')));
+                                      SnackBar(
+                                        duration: Durations.long2,
+                                          behavior: SnackBarBehavior.floating,
+                                          content: Text('Berhasil Menambahkan Data')));
                                 }
                               },
                             )
@@ -909,7 +902,12 @@ behavior: SnackBarBehavior.floating,
                     ),
                   ),
                   FloatingActionButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        duration: Durations.long2,
+                        behavior: SnackBarBehavior.floating,
+                        content: Text("Were Update This Feature ASAP")));
+                    },
                     child: Icon(Icons.checklist_rtl_rounded),
                   )
                 ],
