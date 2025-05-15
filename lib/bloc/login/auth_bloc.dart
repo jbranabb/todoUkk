@@ -88,17 +88,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
     on<LogOut>((event, emit)async {
       var user = FirebaseAuth.instance.currentUser;
+      try{
+
     await auth
           .signOut()
           .then((value) {
           emit(UnAuth());
+          
           print(user);
           print('unauth');
-          Navigator.of(event.context).push(MaterialPageRoute(
-                builder: (context) => LoginPage(),
-              ));
+         
           } 
               );
+      }catch(e){
+        print("Error : ${e.toString()}");
+      }
     });
   }
 }

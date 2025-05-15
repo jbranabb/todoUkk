@@ -1,8 +1,9 @@
 // ignore_for_file: avoid_print
 
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:flutter/';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:todo/bloc/cuit/theme_cubit.dart';
 import 'package:todo/bloc/login/auth_bloc.dart';
 import 'package:todo/login/pages/register.dart';
@@ -18,8 +19,8 @@ class LoginPage extends StatelessWidget {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthLoaded) {
-          Future.delayed(Durations.long4, () => 
-          Navigator.of(context).push(MaterialPageRoute(
+          Future.delayed(Durations.extralong1, () => 
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (context) => HomePage(),
           ))
           ,);
@@ -39,7 +40,7 @@ class LoginPage extends StatelessWidget {
             child: Card(
               color: Theme.of(context).colorScheme.onSecondary,
               child: Container(
-                height: 480,
+                height: 380,
                 width: 300,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -146,11 +147,15 @@ class LoginPage extends StatelessWidget {
                               backgroundColor:
                                   Theme.of(context).colorScheme.onPrimary,
                             ), 
-                          child:Container(
-                                height: 10,
+                          child: Container(
+                                height: 40,
                                 width: 45,
-                                child: Icon(Icons.verified_user))
-                          ); 
+                            child: Center(
+                              child: LottieBuilder.asset(
+                                      'assets/lottie/darkmode.json'),
+                            ),
+                          ),
+                          );
                         }
                         return ElevatedButton(
                             onPressed: () {
@@ -164,7 +169,9 @@ class LoginPage extends StatelessWidget {
                             
                             child: Padding(
                               padding: const EdgeInsets.all(5.0),
-                              child: 
+                              child:
+                          
+                              
                               Text(
                                 'Login',
                                 style: TextStyle(
@@ -178,9 +185,9 @@ class LoginPage extends StatelessWidget {
 
                       },
                     ),
-                    ElevatedButton(onPressed: (){
-                      print(FirebaseAuth.instance.currentUser);
-                    }, child: Icon(Icons.percent))
+                    // ElevatedButton(onPressed: (){
+                    //   print(FirebaseAuth.instance.currentUser);
+                    // }, child: Icon(Icons.percent))
                   ],
                 ),
               ),

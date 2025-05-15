@@ -12,6 +12,7 @@ import 'package:todo/bloc/cuit/theme_cubit.dart';
 import 'package:todo/bloc/login/auth_bloc.dart';
 import 'package:todo/bloc/todo/todo_bloc.dart';
 import 'package:todo/bloc/todo/todo_cubit.dart';
+import 'package:todo/login/pages/login.dart';
 
 late DatabaseReference dbref;
 FirebaseAuth auth = FirebaseAuth.instance;
@@ -55,6 +56,11 @@ class _HomePageState extends State<HomePage> {
       }
     });
   }
+   StreamSubscription? _authSubscription;
+  StreamSubscription? _dbSubscription;
+  void stream(){
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,11 +75,11 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         elevation: 0.0,
         actions: [
-          IconButton(
-              onPressed: () {
-                print(searching.text);
-              },
-              icon: Icon(Icons.abc)),
+          // IconButton(
+          //     onPressed: () {
+          //       print(searching.text);
+          //     },
+          //     icon: Icon(Icons.abc)),
           IconButton(
               onPressed: context.read<ThemeCubit>().changeTheme,
               icon: BlocBuilder<ThemeCubit, bool>(
@@ -87,7 +93,8 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.all(100),
             onSelected: (value) {
               if (value == "logout") {
-                context.read<AuthBloc>().add(LogOut(context));
+                context.read<AuthBloc>().add(LogOut());
+                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginPage() ,  ));
               }
             },
             itemBuilder: (context) => [
@@ -474,11 +481,12 @@ class _HomePageState extends State<HomePage> {
             // fetch data
             Container(
               height: 700,
-              child: BlocBuilder<TodoBloc, TodoState>(
+              child: auth.currentUser != null ? 
+              BlocBuilder<TodoBloc, TodoState>(
                 builder: (context, state) {
                   return BlocBuilder<TextSearchCubit, String>(builder: (context, searchTextState) { 
                     return StreamBuilder(
-                      stream: dbref.onValue,
+                      stream: auth.currentUser != null ? dbref.onValue  : null,
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.waiting) {
                           return Center(
@@ -515,8 +523,8 @@ class _HomePageState extends State<HomePage> {
                                           height: 220.0,
                                           width: 220.0,
                                           state
-                                              ? 'assets/svg/add_white.svg'
-                                              : 'assets/svg/add_dark.svg'),
+                                              ? 'assets/svg/no_white.svg'
+                                              : 'assets/svg/no_dark.svg'),
                                       Text(
                                         'Tidak Ada Pencarian Yang Cocok',
                                         textAlign: TextAlign.center,
@@ -559,9 +567,7 @@ class _HomePageState extends State<HomePage> {
                                       element.value['priorty'] ==
                                       state.fileterPriorty)
                                   .toList();
-                            } else {
-                              // print('empty');
-                            }
+                            } 
                     
                             if (state.iscompledfilter == true) {
                               filteredList = filteredList
@@ -855,7 +861,9 @@ class _HomePageState extends State<HomePage> {
                     );
                   });
                 },
-              ),
+              ) : Center(
+                child: Text('Login Untuk Melihat Data'),
+              )
             ),
           ],
         ),
@@ -880,10 +888,13 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   FloatingActionButton(
+                    heroTag: "fab-search",
                       onPressed: () {
                         context.read<SearchCubit>().changeState();
                       }, child: const Icon(Icons.search)),
                   FloatingActionButton(
+                    heroTag: "fab-add",
+                    
                     backgroundColor: Theme.of(context).colorScheme.onPrimary,
                     onPressed: () {
                       showDialog(
@@ -991,6 +1002,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   FloatingActionButton(
+                     heroTag: "fab-list",
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           duration: Durations.long2,
