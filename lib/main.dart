@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/bloc/bloc/daytim_bloc.dart';
-import 'package:todo/bloc/cuit/checkbook_cubit.dart';
 import 'package:todo/bloc/cuit/date_cubit.dart';
 import 'package:todo/bloc/cuit/theme_cubit.dart';
 import 'package:todo/bloc/login/auth_bloc.dart';
@@ -27,7 +26,6 @@ void main() async {
       BlocProvider(create: (context) => DaytimBloc(),),
       BlocProvider(create: (context) => ThemeCubit(),),
       BlocProvider(create: (context) => DateCubit(),),
-      BlocProvider(create: (context) => CheckbookCubit(),),
     ],
     child: const MyApp()));
 }
