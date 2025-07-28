@@ -665,53 +665,93 @@ class _HomePageState extends State<HomePage> {
                                                   ),
                                                 );
                                               },
-                                              child: Card(
-                                                  color: Colors.grey.shade200
-                                                      .withOpacity(1),
-                                                  child: Container(
-                                                    width: width * 0.90,
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10)),
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.symmetric(
-
-                                                            horizontal:   12.0, vertical: 8),
-                                                      child: Row(
-                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        children: [
-                                                          Expanded(
-                                                            child: Column(
-                                                              mainAxisAlignment: MainAxisAlignment.start,
-                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                              children: [
-                                                                Text(
-                                                                  "${tod['title']}:",
-                                                                  style: TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w900,
-                                                                      fontSize: 17),
-                                                                ),
-                                                                Text(
-                                                                  tod['desc'],
-                                                                  style: TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .normal,
-                                                                      fontSize: 17),
-                                                                ),
-                                                              ],
+                                              child: GestureDetector(
+                                                child: Card(
+                                                    color: Colors.grey.shade200
+                                                        .withOpacity(1),
+                                                    child: Container(
+                                                      width: width * 0.90,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      10)),
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                                horizontal:
+                                                                    12.0,
+                                                                vertical: 8),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Expanded(
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
+                                                                    "${tod['title']}:",
+                                                                    style: TextStyle(
+                                                                        color: tod['isCompleted'] !=
+                                                                                false
+                                                                            ? Theme.of(context)
+                                                                                .colorScheme
+                                                                                .onPrimary
+                                                                            : Theme.of(context)
+                                                                                .colorScheme
+                                                                                .secondary,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w900,
+                                                                        fontSize:
+                                                                            17),
+                                                                  ),
+                                                                  Text(
+                                                                    tod['desc'],
+                                                                    style: TextStyle(
+                                                                        color: tod['isCompleted'] !=
+                                                                                false
+                                                                            ? Theme.of(context)
+                                                                                .colorScheme
+                                                                                .onPrimary
+                                                                            : Theme.of(context)
+                                                                                .colorScheme
+                                                                                .secondary,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .normal,
+                                                                        fontSize:
+                                                                            17),
+                                                                  ),
+                                                                ],
+                                                              ),
                                                             ),
-                                                          ),
-                                                          buildPriorityWidget(tod['priorty'])
-                                                        ],
+                                                            buildPriorityWidget(
+                                                                tod['priorty'],
+                                                                tod['datetime'],
+                                                                tod['isCompleted']
+                                                                )
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ),
-                                                  )),
+                                                    )),
+                                                onTap: () {
+                                                  context
+                                                      .read<TodoCubit>()
+                                                      .changetod(key);
+                                                },
+                                              ),
                                             );
                                           },
                                         ),
@@ -842,30 +882,52 @@ class MyText extends StatelessWidget {
 }
 
 class ContainerPriorty extends StatelessWidget {
-  Color color;
-  Color borderColor;
   String label;
-  ContainerPriorty(
-      {super.key,
-      required this.borderColor,
-      required this.label,
-      required this.color});
+  String time;
+  bool status;
+  ContainerPriorty({
+    super.key,
+    required this.label,
+    required this.time,
+    required this.status,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 20,
-      width: 40,
-      decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey.shade700),
-          color: Colors.grey.shade400.withOpacity(0.5),
-          borderRadius: BorderRadius.circular(5)),
-      child: Center(
-        child: Text(
-          label,
-          style: TextStyle(color: Colors.grey.shade900, fontSize: 12, fontWeight: FontWeight.bold),
+    return Column(
+      children: [
+        Text(
+          time,
+          style: TextStyle(
+              color: status != false
+                  ? Theme.of(context).colorScheme.onPrimary
+                  : Theme.of(context).colorScheme.secondary,
+              fontSize: 12,
+              fontWeight: FontWeight.bold),
         ),
-      ),
+        SizedBox(
+          height: 5,
+        ),
+        Container(
+          height: 20,
+          width: 40,
+          decoration: BoxDecoration(
+              border: Border.all(color: status != false ? Colors.grey.shade700 : Colors.grey.shade200),
+              color: Colors.grey.shade400.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(5)),
+          child: Center(
+            child: Text(
+              label,
+              style: TextStyle(
+                   color: status != false
+                  ? Theme.of(context).colorScheme.onPrimary
+                  : Theme.of(context).colorScheme.secondary,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -895,27 +957,15 @@ class MyTextField extends StatelessWidget {
   }
 }
 
-Widget buildPriorityWidget(String priority) {
+Widget buildPriorityWidget(String priority, String date, bool status) {
   switch (priority.toLowerCase()) {
     case 'low':
-      return ContainerPriorty(
-          borderColor: Colors.green.shade800,
-          color: Colors.greenAccent.shade200,
-          label: 'Low');
+      return ContainerPriorty(status: status, time: date, label: 'Low');
     case 'mid':
-      return ContainerPriorty(
-          borderColor: Colors.red.shade900,
-          color: Colors.red.shade300,
-          label: 'Mid');
+      return ContainerPriorty(status: status, time: date, label: 'Mid');
     case 'high':
-      return ContainerPriorty(
-          borderColor: Colors.orangeAccent.shade700,
-          color: Colors.orangeAccent.shade200,
-          label: 'High');
+      return ContainerPriorty(status: status, time: date, label: 'High');
     default:
-      return ContainerPriorty(
-          borderColor: Colors.transparent,
-          color: Colors.transparent,
-          label: '');
+      return ContainerPriorty(status: status, time: '', label: '');
   }
 }

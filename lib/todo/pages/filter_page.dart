@@ -40,7 +40,7 @@ class FilterPage extends StatelessWidget {
                         trailing: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            buildPriorityWidget(tod['priorty']),
+                            buildPriorityWidget(tod['priorty'], tod['datetime'], tod['isCompleted']),
                             Text(tod['datetime']),
                           ],
                         ),
