@@ -497,7 +497,6 @@ class _HomePageState extends State<HomePage> {
                                               .colorScheme
                                               .onPrimary));
                                 }
-
                                 if (snapshot.hasData &&
                                     snapshot.data!.snapshot.value != null) {
                                   final data = Map<String, dynamic>.from(
@@ -597,6 +596,8 @@ class _HomePageState extends State<HomePage> {
                                     }
                                   }
                                   listCount = sortedList.length;
+
+                                  
                                   return ListView.builder(
                                     physics:
                                         const NeverScrollableScrollPhysics(),
@@ -606,7 +607,6 @@ class _HomePageState extends State<HomePage> {
                                           filteredList[index].value);
                                       final key = filteredList[index].key;
                                       tod['key'] = key;
-
                                       return Padding(
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 10, vertical: 0),
@@ -1029,17 +1029,17 @@ class MyTextField extends StatelessWidget {
 
 Widget buildPriorityWidget(String priority) {
   switch (priority.toLowerCase()) {
-    case 'rendah':
+    case 'low':
       return ContainerPriorty(
           borderColor: Colors.green.shade800,
           color: Colors.greenAccent.shade200,
           label: 'RND');
-    case 'tinggi':
+    case 'mid':
       return ContainerPriorty(
           borderColor: Colors.red.shade900,
           color: Colors.red.shade300,
           label: 'TNG');
-    case 'sedang':
+    case 'high':
       return ContainerPriorty(
           borderColor: Colors.orangeAccent.shade700,
           color: Colors.orangeAccent.shade200,
