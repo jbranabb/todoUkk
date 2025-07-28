@@ -12,6 +12,8 @@ ThemeData light = ThemeData(
       error: Colors.red.shade200, // kepake
       onError: Colors.black, // blm
       surface: Colors.grey.shade800,
+      outline: Colors.grey.shade500,
+      surfaceBright: Colors.grey.shade300,
       onSurface: Colors.grey.shade200,
       onTertiary: Colors.grey.shade700,
       brightness: Brightness.light,
@@ -26,6 +28,8 @@ ThemeData dark = ThemeData(
       secondary: Colors.grey.shade700,
       onSecondary: Colors.grey.shade800,
       error: Colors.red.shade900,
+      outline: Colors.grey.shade900,
+      surfaceBright: Colors.grey.shade700,
       onError: Colors.white,
       surface: Colors.grey.shade300,
       onSurface: Colors.grey.shade700,
