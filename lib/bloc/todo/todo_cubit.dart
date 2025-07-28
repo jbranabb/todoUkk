@@ -16,5 +16,6 @@ class TodoCubit extends Cubit<bool>{
       'isCompleted': state
     };
     await dbref.child(key).update(value);
+    print('im also work here');
   }
 }

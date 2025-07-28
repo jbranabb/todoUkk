@@ -152,6 +152,7 @@ class MyTextField extends StatelessWidget {
         child: TextField(
             controller: controller,
             minLines: 1,
+            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
             maxLines: maxlines,
             decoration: InputDecoration(
               labelText: input,

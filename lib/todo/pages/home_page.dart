@@ -40,11 +40,11 @@ class _HomePageState extends State<HomePage> {
   bool selected = false;
   String searchText = '';
   bool checkboxSelected = false;
-  List<String> priorty = [
-    'tinggi',
-    'sedang',
-    'rendah',
-  ];
+  // List<String> priorty = [
+  //   'tinggi',
+  //   'sedang',
+  //   'rendah',
+  // ];
   bool imagetrue = false;
   @override
   void initState() {
@@ -665,9 +665,13 @@ class _HomePageState extends State<HomePage> {
                                                   ),
                                                 );
                                               },
-                                              child: GestureDetector(
+                                              child: InkWell(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
                                                 child: Card(
-                                                    color: Colors.grey.shade200
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .secondary
                                                         .withOpacity(1),
                                                     child: Container(
                                                       width: width * 0.90,
@@ -710,7 +714,7 @@ class _HomePageState extends State<HomePage> {
                                                                                 .onPrimary
                                                                             : Theme.of(context)
                                                                                 .colorScheme
-                                                                                .secondary,
+                                                                                .onSecondary,
                                                                         fontWeight:
                                                                             FontWeight
                                                                                 .w900,
@@ -727,7 +731,7 @@ class _HomePageState extends State<HomePage> {
                                                                                 .onPrimary
                                                                             : Theme.of(context)
                                                                                 .colorScheme
-                                                                                .secondary,
+                                                                                .onSecondary,
                                                                         fontWeight:
                                                                             FontWeight
                                                                                 .normal,
@@ -737,11 +741,15 @@ class _HomePageState extends State<HomePage> {
                                                                 ],
                                                               ),
                                                             ),
-                                                            buildPriorityWidget(
-                                                                tod['priorty'],
-                                                                tod['datetime'],
-                                                                tod['isCompleted']
-                                                                )
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: buildPriorityWidget(
+                                                                  tod['priorty'],
+                                                                  tod['datetime'],
+                                                                  tod['isCompleted']),
+                                                            )
                                                           ],
                                                         ),
                                                       ),
@@ -750,6 +758,153 @@ class _HomePageState extends State<HomePage> {
                                                   context
                                                       .read<TodoCubit>()
                                                       .changetod(key);
+                                                },
+                                                onLongPress: () {
+                                                  titleC.text = tod['title'];
+                                                  desC.text = tod['desc'];
+                                                  rty.text = tod['priorty'];
+                                                  showModalBottomSheet(
+                                                    backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                                                      context: context,
+                                                      isScrollControlled: true,
+                                                      builder: (context) =>
+                                                          SingleChildScrollView(
+                                                            child: SizedBox(
+                                                              height:
+                                                                  height * 0.55,
+                                                              child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  SizedBox(
+                                                                    height: 10,
+                                                                  ),
+                                                                  Padding(
+                                                                    padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                        horizontal:
+                                                                            12.0,
+                                                                        vertical:
+                                                                            8),
+                                                                    child: Text(
+                                                                      'Edit Somthing?',
+                                                                      style: TextStyle(
+                                                                        color: Theme.of(context).colorScheme.onPrimary,
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          fontSize:
+                                                                              19),
+                                                                    ),
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 10,
+                                                                  ),
+                                                                  MyTextField(
+                                                                      controller:
+                                                                          titleC,
+                                                                      input:
+                                                                          'Title',
+                                                                      maxlines:
+                                                                          2,
+                                                                      desc:
+                                                                          'Bakso'),
+                                                                  MyTextField(
+                                                                      controller:
+                                                                          desC,
+                                                                      input:
+                                                                          'Title',
+                                                                      maxlines:
+                                                                          2,
+                                                                      desc:
+                                                                          'Bakso'),
+                                                                  Padding(
+                                                                    padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                        horizontal:
+                                                                            20.0),
+                                                                    child:
+                                                                        SizedBox(
+                                                                      width:
+                                                                          200,
+                                                                      child:
+                                                                          DropdownButtonFormField(
+                                                                        menuMaxHeight:
+                                                                            200,
+                                                                        dropdownColor: Theme.of(context)
+                                                                            .colorScheme
+                                                                            .secondary,
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(20),
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Theme.of(context).colorScheme.onPrimary),
+                                                                        decoration: InputDecoration(
+                                                                            enabledBorder:
+                                                                                OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary)),
+                                                                            focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.outline))),
+                                                                        hint: Text(
+                                                                            rty.text),
+                                                                        isExpanded:
+                                                                            true,
+                                                                        value:
+                                                                            isSelected,
+                                                                        items: priorty
+                                                                            .map((e) =>
+                                                                                DropdownMenuItem(value: e, child: Text(e)))
+                                                                            .toList(),
+                                                                        onChanged:
+                                                                            (value) {
+                                                                          rty.text =
+                                                                              value.toString();
+                                                                        },
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Center(
+                                                                    child: Padding(
+                                                                      padding: const EdgeInsets.all(15.0),
+                                                                      child: ElevatedButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            if (titleC.text.isNotEmpty ||
+                                                                                desC.text.isNotEmpty ||
+                                                                                rty.text.isNotEmpty) {
+                                                                                  context.read<TodoBloc>().add(
+                                                                                    UpdateTodo(title: titleC.text, desc: desC.text, key: key,
+                                                                                     rty: rty.text)
+                                                                                    );
+                                                                            } else {
+                                                                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                                                                  behavior: SnackBarBehavior.floating,
+                                                                                  duration: Durations.long3,
+                                                                                  content: Text('Please fill all Empty Fields')));
+                                                                            }
+                                                                          },
+                                                                          style: ElevatedButton.styleFrom(
+                                                                              backgroundColor: Theme.of(context)
+                                                                                  .colorScheme
+                                                                                  .onPrimary),
+                                                                          child:
+                                                                              Padding(
+                                                                            padding: const EdgeInsets
+                                                                                .symmetric(
+                                                                                horizontal:
+                                                                                    10.0),
+                                                                            child:
+                                                                                Text(
+                                                                              'Done',
+                                                                              style: TextStyle(
+                                                                                  fontWeight: FontWeight.bold,
+                                                                                  color: Theme.of(context).colorScheme.primary),
+                                                                            ),
+                                                                          )),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ));
                                                 },
                                               ),
                                             );
@@ -817,7 +972,7 @@ class _HomePageState extends State<HomePage> {
             height: 50,
             width: 200,
             decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.secondary,
+                color: Theme.of(context).colorScheme.onSecondary,
                 borderRadius: BorderRadius.circular(20)),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -865,6 +1020,12 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
+List<String> priorty = [
+  'High',
+  'Mid',
+  'Low',
+];
+
 class MyText extends StatelessWidget {
   String text;
   MyText({
@@ -901,7 +1062,7 @@ class ContainerPriorty extends StatelessWidget {
           style: TextStyle(
               color: status != false
                   ? Theme.of(context).colorScheme.onPrimary
-                  : Theme.of(context).colorScheme.secondary,
+                  : Theme.of(context).colorScheme.onSecondary,
               fontSize: 12,
               fontWeight: FontWeight.bold),
         ),
@@ -912,16 +1073,19 @@ class ContainerPriorty extends StatelessWidget {
           height: 20,
           width: 40,
           decoration: BoxDecoration(
-              border: Border.all(color: status != false ? Colors.grey.shade700 : Colors.grey.shade200),
+              border: Border.all(
+                  color: status != false
+                      ? Colors.grey.shade700
+                      : Colors.grey.shade200),
               color: Colors.grey.shade400.withOpacity(0.5),
               borderRadius: BorderRadius.circular(5)),
           child: Center(
             child: Text(
               label,
               style: TextStyle(
-                   color: status != false
-                  ? Theme.of(context).colorScheme.onPrimary
-                  : Theme.of(context).colorScheme.secondary,
+                  color: status != false
+                      ? Theme.of(context).colorScheme.onPrimary
+                      : Theme.of(context).colorScheme.onSecondary,
                   fontSize: 12,
                   fontWeight: FontWeight.bold),
             ),
@@ -935,28 +1099,6 @@ class ContainerPriorty extends StatelessWidget {
 Color red = Colors.red;
 bool s = false;
 String? iselected;
-
-class MyTextField extends StatelessWidget {
-  TextEditingController controller;
-  String hint;
-  MyTextField({super.key, required this.controller, required this.hint});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      cursorColor: Theme.of(context).colorScheme.onPrimary,
-      style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-      decoration: InputDecoration(
-        enabledBorder: UnderlineInputBorder(
-            borderSide:
-                BorderSide(color: Theme.of(context).colorScheme.primary)),
-        hintText: 'Masukan $hint',
-      ),
-    );
-  }
-}
-
 Widget buildPriorityWidget(String priority, String date, bool status) {
   switch (priority.toLowerCase()) {
     case 'low':

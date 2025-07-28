@@ -8,7 +8,7 @@ ThemeData light = ThemeData(
       primary: Colors.white, // kepake
       onPrimary: Colors.black, //  kepake 
       secondary: Colors.grey.shade300, // kepake
-      onSecondary: Colors.grey.shade300, // kepake
+      onSecondary: Colors.grey.shade400, // kepake
       error: Colors.red.shade200, // kepake
       onError: Colors.black, // blm
       surface: Colors.grey.shade800,
@@ -17,6 +17,7 @@ ThemeData light = ThemeData(
       onSurface: Colors.grey.shade200,
       onTertiary: Colors.grey.shade700,
       brightness: Brightness.light,
+      primaryContainer: Colors.grey.shade100
     ));
 
 ThemeData dark = ThemeData(
@@ -36,4 +37,5 @@ ThemeData dark = ThemeData(
       tertiary: Colors.red,
       onTertiary: Colors.grey.shade400,
       brightness: Brightness.dark,
+      primaryContainer: Colors.grey.shade900
     ));
