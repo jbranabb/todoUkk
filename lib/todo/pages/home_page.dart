@@ -671,7 +671,7 @@ class _HomePageState extends State<HomePage> {
                                                 child: Card(
                                                     color: Theme.of(context)
                                                         .colorScheme
-                                                        .secondary
+                                                        .primaryContainer
                                                         .withOpacity(1),
                                                     child: Container(
                                                       width: width * 0.90,
@@ -1075,9 +1075,9 @@ class ContainerPriorty extends StatelessWidget {
           decoration: BoxDecoration(
               border: Border.all(
                   color: status != false
-                      ? Colors.grey.shade700
-                      : Colors.grey.shade200),
-              color: Colors.grey.shade400.withOpacity(0.5),
+                      ? Theme.of(context).colorScheme.onSurface
+                      :  Colors.transparent),
+              color: Theme.of(context).colorScheme.primaryContainer,
               borderRadius: BorderRadius.circular(5)),
           child: Center(
             child: Text(
