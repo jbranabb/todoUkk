@@ -65,6 +65,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     FirebaseAuth auth = FirebaseAuth.instance;
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
     print('build');
     Query dbref =
         FirebaseDatabase.instance.ref().child('todos/$uid/$dateClick');
@@ -75,11 +77,6 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         elevation: 0.0,
         actions: [
-          // IconButton(
-          //     onPressed: () {
-          //       print(searching.text);
-          //     },
-          //     icon: Icon(Icons.abc)),
           IconButton(
               onPressed: context.read<ThemeCubit>().changeTheme,
               icon: BlocBuilder<ThemeCubit, bool>(
@@ -597,7 +594,6 @@ class _HomePageState extends State<HomePage> {
                                   }
                                   listCount = sortedList.length;
 
-                                  
                                   return ListView.builder(
                                     physics:
                                         const NeverScrollableScrollPhysics(),
@@ -670,180 +666,52 @@ class _HomePageState extends State<HomePage> {
                                                 );
                                               },
                                               child: Card(
-                                                child: ListTile(
-                                                  onTap: () {
-                                                    context
-                                                        .read<TodoCubit>()
-                                                        .changetod(key);
-                                                  },
-                                                  onLongPress: () {
-                                                    titleC.text = tod['title'];
-                                                    desC.text = tod['desc'];
-                                                    rty.text = tod['priorty'];
-                                                    showDialog(
-                                                      context: context,
-                                                      builder: (context) =>
-                                                          AlertDialog(
-                                                        title: MyText(
-                                                            text:
-                                                                "Update Todo"),
-                                                        content: Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.min,
-                                                          children: [
-                                                            MyTextField(
-                                                                controller:
-                                                                    titleC,
-                                                                hint: 'Judul'),
-                                                            const SizedBox(
-                                                                height: 10),
-                                                            MyTextField(
-                                                                controller:
-                                                                    desC,
-                                                                hint:
-                                                                    'Deskripsi'),
-                                                            DropdownButtonFormField(
-                                                              style: TextStyle(
-                                                                  color: Theme.of(
-                                                                          context)
-                                                                      .colorScheme
-                                                                      .onPrimary),
-                                                              decoration: InputDecoration(
-                                                                  enabledBorder: UnderlineInputBorder(
-                                                                      borderSide: BorderSide(
-                                                                          color: Theme.of(context)
-                                                                              .colorScheme
-                                                                              .secondary)),
-                                                                  focusedBorder:
-                                                                      UnderlineInputBorder(
-                                                                          borderSide:
-                                                                              BorderSide(color: Theme.of(context).colorScheme.primary))),
-                                                              hint: const Text(
-                                                                  'Pilih Priorty'),
-                                                              isExpanded: true,
-                                                              value: tod[
-                                                                  'priorty'],
-                                                              items: priorty
-                                                                  .map((e) =>
-                                                                      DropdownMenuItem(
-                                                                          value:
-                                                                              e,
-                                                                          child:
-                                                                              Text(e)))
-                                                                  .toList(),
-                                                              onChanged:
-                                                                  (value) {
-                                                                rty.text = value
-                                                                    .toString();
-                                                              },
-                                                            )
-                                                          ],
-                                                        ),
-                                                        actions: [
-                                                          TextButton(
-                                                              onPressed: () {
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop();
-                                                                titleC.clear();
-                                                                desC.clear();
-                                                              },
-                                                              child: MyText(
-                                                                text: 'No',
-                                                              )),
-                                                          TextButton(
-                                                              onPressed: () {
-                                                                context
-                                                                    .read<
-                                                                        TodoBloc>()
-                                                                    .add(UpdateTodo(
-                                                                        title: titleC
-                                                                            .text,
-                                                                        desc: desC
-                                                                            .text,
-                                                                        rty: rty
-                                                                            .text,
-                                                                        key:
-                                                                            key));
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop();
-                                                                if (titleC
-                                                                            .text ==
-                                                                        tod[
-                                                                            'title'] &&
-                                                                    desC.text ==
-                                                                        tod[
-                                                                            'desc'] &&
-                                                                    rty.text ==
-                                                                        tod['priorty']) {
-                                                                  ScaffoldMessenger.of(
-                                                                          context)
-                                                                      .showSnackBar(
-                                                                          SnackBar(
-                                                                    behavior:
-                                                                        SnackBarBehavior
-                                                                            .floating,
-                                                                    content: Text(
-                                                                        'Tidak Ada Yang Berubah'),
-                                                                    duration:
-                                                                        Durations
-                                                                            .extralong3,
-                                                                    backgroundColor: Theme.of(
-                                                                            context)
-                                                                        .colorScheme
-                                                                        .secondary,
-                                                                  ));
-                                                                }
-                                                                titleC.clear();
-                                                                desC.clear();
-                                                              },
-                                                              child: MyText(
-                                                                  text: 'Yes')),
+                                                  color: Colors.grey.shade200
+                                                      .withOpacity(1),
+                                                  child: Container(
+                                                    width: width * 0.90,
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10)),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.symmetric(
+
+                                                            horizontal:   12.0, vertical: 8),
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                          Expanded(
+                                                            child: Column(
+                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              children: [
+                                                                Text(
+                                                                  "${tod['title']}:",
+                                                                  style: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w900,
+                                                                      fontSize: 17),
+                                                                ),
+                                                                Text(
+                                                                  tod['desc'],
+                                                                  style: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal,
+                                                                      fontSize: 17),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          buildPriorityWidget(tod['priorty'])
                                                         ],
                                                       ),
-                                                    );
-                                                  },
-                                                  leading: selected
-                                                      ? Checkbox(
-                                                          value:
-                                                              checkboxSelected,
-                                                          onChanged: (value) {},
-                                                        )
-                                                      : null,
-                                                  title: Text(
-                                                    tod['title'],
-                                                    style: TextStyle(
-                                                        decoration:
-                                                            (tod['isCompleted'] ==
-                                                                    true)
-                                                                ? TextDecoration
-                                                                    .lineThrough
-                                                                : TextDecoration
-                                                                    .none),
-                                                  ),
-                                                  subtitle: Text(
-                                                    tod['desc'],
-                                                    style: TextStyle(
-                                                        decoration:
-                                                            (tod['isCompleted'] ==
-                                                                    true)
-                                                                ? TextDecoration
-                                                                    .lineThrough
-                                                                : TextDecoration
-                                                                    .none),
-                                                  ),
-                                                  trailing: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children: [
-                                                      buildPriorityWidget(
-                                                          tod['priorty']),
-                                                      Text(tod['datetime']),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
+                                                    ),
+                                                  )),
                                             );
                                           },
                                         ),
@@ -989,13 +857,13 @@ class ContainerPriorty extends StatelessWidget {
       height: 20,
       width: 40,
       decoration: BoxDecoration(
-          border: Border.all(color: borderColor),
-          color: color.withOpacity(0.5),
+          border: Border.all(color: Colors.grey.shade700),
+          color: Colors.grey.shade400.withOpacity(0.5),
           borderRadius: BorderRadius.circular(5)),
       child: Center(
         child: Text(
           label,
-          style: TextStyle(color: borderColor),
+          style: TextStyle(color: Colors.grey.shade900, fontSize: 12, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -1033,17 +901,17 @@ Widget buildPriorityWidget(String priority) {
       return ContainerPriorty(
           borderColor: Colors.green.shade800,
           color: Colors.greenAccent.shade200,
-          label: 'RND');
+          label: 'Low');
     case 'mid':
       return ContainerPriorty(
           borderColor: Colors.red.shade900,
           color: Colors.red.shade300,
-          label: 'TNG');
+          label: 'Mid');
     case 'high':
       return ContainerPriorty(
           borderColor: Colors.orangeAccent.shade700,
           color: Colors.orangeAccent.shade200,
-          label: 'SDG');
+          label: 'High');
     default:
       return ContainerPriorty(
           borderColor: Colors.transparent,
