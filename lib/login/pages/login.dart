@@ -35,10 +35,10 @@ class LoginPage extends StatelessWidget {
       },
       child: BlocBuilder<ThemeState, bool>(
         builder: (context, state) => Scaffold(
-          backgroundColor: state ? Colors.grey.shade200 : Colors.grey.shade800,
+          backgroundColor: state ? Colors.grey.shade400 : Colors.grey.shade200,
           body: Center(
             child: Card(
-              color: Theme.of(context).colorScheme.onSecondary,
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
               child: Container(
                 height: 380,
                 width: 300,
@@ -220,13 +220,14 @@ class MyTextfieldlogin extends StatelessWidget {
         cursorColor: Theme.of(context).colorScheme.onPrimary,
         decoration: InputDecoration(
             hintText: hint,
+            hintStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
             focusedBorder: OutlineInputBorder(
                 borderSide:
-                    BorderSide(color: Theme.of(context).colorScheme.surface),
+                    BorderSide(color: Theme.of(context).colorScheme.onInverseSurface),
                 borderRadius: BorderRadius.circular(15)),
             enabledBorder: OutlineInputBorder(
                 borderSide:
-                    BorderSide(color: Theme.of(context).colorScheme.onSurface),
+                    BorderSide(color: Theme.of(context).colorScheme.inverseSurface),
                 borderRadius: BorderRadius.circular(15))),
       ),
     );

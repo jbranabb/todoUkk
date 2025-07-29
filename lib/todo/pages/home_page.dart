@@ -14,6 +14,7 @@ import 'package:todo/bloc/cuit/theme_cubit.dart';
 import 'package:todo/bloc/login/auth_bloc.dart';
 import 'package:todo/bloc/todo/todo_bloc.dart';
 import 'package:todo/bloc/todo/todo_cubit.dart';
+import 'package:todo/login/pages/login.dart';
 import 'package:todo/todo/pages/add_page.dart';
 import 'package:todo/todo/widgets/priorty_section.dart';
 
@@ -119,6 +120,7 @@ class _HomePageState extends State<HomePage> {
                     ElevatedButton(
                         onPressed: () {
                           context.read<AuthBloc>().add(LogOut());
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginPage() ,  ));
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor:

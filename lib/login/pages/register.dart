@@ -23,7 +23,7 @@ class RegisterPage extends StatelessWidget {
             child: Card(
               // shadowColor: Colors.blue,
               
-              color: Theme.of(context).colorScheme.onSecondary,
+              color: Theme.of(context).colorScheme.onSecondary.withOpacity(0.4),
               child: SizedBox(
                 height: 540,
                 width: 300,
