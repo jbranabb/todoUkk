@@ -40,11 +40,6 @@ class _HomePageState extends State<HomePage> {
   bool selected = false;
   String searchText = '';
   bool checkboxSelected = false;
-  // List<String> priorty = [
-  //   'tinggi',
-  //   'sedang',
-  //   'rendah',
-  // ];
   bool imagetrue = false;
   @override
   void initState() {
@@ -57,10 +52,6 @@ class _HomePageState extends State<HomePage> {
       }
     });
   }
-
-  StreamSubscription? _authSubscription;
-  StreamSubscription? _dbSubscription;
-  void stream() {}
 
   @override
   Widget build(BuildContext context) {
@@ -84,35 +75,71 @@ class _HomePageState extends State<HomePage> {
                         state ? Icons.sunny : Icons.dark_mode,
                         color: Theme.of(context).colorScheme.onPrimary,
                       ))),
-          PopupMenuButton<String>(
-            shadowColor: Colors.black,
-            tooltip: 'On Tap For Menu',
-            padding: const EdgeInsets.all(100),
-            onSelected: (value) {
-              if (value == "logout") {
-                context.read<AuthBloc>().add(LogOut());
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => LoginPage(),
-                ));
-              }
+          InkWell(
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text(
+                    'Youre About to Signout',
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary),
+                  ),
+                  content: Text(
+                    'Are You Sure',
+                    style:
+                        TextStyle(color: Theme.of(context).colorScheme.primary),
+                  ),
+                  actions: [
+                    ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.onPrimary),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Text(
+                            'Nope',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.primary),
+                          ),
+                        )),
+                    ElevatedButton(
+                        onPressed: () {
+                          context.read<AuthBloc>().add(LogOut());
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.onPrimary),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Text(
+                            'Yupp',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.primary),
+                          ),
+                        )),
+                  ],
+                ),
+              );
             },
-            itemBuilder: (context) => [
-              const PopupMenuItem(
-                  value: 'logout',
-                  child: ListTile(
-                    leading: Icon(Icons.login_outlined),
-                    title: Text('Log Out'),
-                  )),
-            ],
             child: Container(
               height: 40,
               width: 40,
               decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.onPrimary,
                   borderRadius: BorderRadius.circular(20)),
-              child: Icon(
-                Icons.person,
-                color: Theme.of(context).colorScheme.primary,
+              child: Center(
+                child: Icon(
+                  Icons.logout_outlined,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               ),
             ),
           ),
@@ -166,26 +193,29 @@ class _HomePageState extends State<HomePage> {
             BlocBuilder<SearchCubit, bool>(
               builder: (context, state) {
                 if (state == true) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 20.0),
-                    child: BlocBuilder<TextSearchCubit, String>(
-                      builder: (context, state) => TextField(
-                        cursorColor: Theme.of(context).colorScheme.onPrimary,
-                        autocorrect: false,
-                        controller: searching,
-                        onChanged: (value) {
-                          context.read<TextSearchCubit>().hello(value);
-                        },
-                        decoration: InputDecoration(
-                          hintText: "Mau Cari Sesuatu?",
-                          labelText: "Pencarian",
-                          labelStyle: TextStyle(
-                              color: Theme.of(context).colorScheme.onPrimary),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10)),
+                  return AnimatedContainer(
+                    duration: Durations.long2,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 20.0),
+                      child: BlocBuilder<TextSearchCubit, String>(
+                        builder: (context, state) => TextField(
+                          cursorColor: Theme.of(context).colorScheme.onPrimary,
+                          autocorrect: false,
+                          controller: searching,
+                          onChanged: (value) {
+                            context.read<TextSearchCubit>().hello(value);
+                          },
+                          decoration: InputDecoration(
+                            hintText: "Mau Cari Sesuatu?",
+                            labelText: "Pencarian",
+                            labelStyle: TextStyle(
+                                color: Theme.of(context).colorScheme.onPrimary),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                          ),
                         ),
                       ),
                     ),
@@ -193,7 +223,8 @@ class _HomePageState extends State<HomePage> {
                 }
                 return BlocBuilder<DateCubit, List<String>>(
                     builder: (context, dates) {
-                  return Container(
+                  return AnimatedContainer(
+                    duration: Durations.long1,
                     height: 50,
                     decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.primary),
@@ -241,7 +272,7 @@ class _HomePageState extends State<HomePage> {
                           child: GridView.builder(
                             itemCount: dates.length,
                             gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
+                                const SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 7,
                                     childAspectRatio: 0.9,
                                     crossAxisSpacing: 1,
@@ -308,6 +339,7 @@ class _HomePageState extends State<HomePage> {
                                       .colorScheme
                                       .onPrimary))),
                     ),
+                    // filter section
                     const SizedBox(),
                     IconButton(
                       onPressed: () {
@@ -350,13 +382,13 @@ class _HomePageState extends State<HomePage> {
                                             selectedColor: Theme.of(context)
                                                 .colorScheme
                                                 .onTertiary,
-                                            label: Text("Tinggi"),
-                                            selected: selectedPriorityFilter ==
-                                                'tinggi',
+                                            label: Text("High"),
+                                            selected:
+                                                selectedPriorityFilter == 'a',
                                             onSelected: (selected) {
                                               setState(() {
                                                 selectedPriorityFilter =
-                                                    selected ? 'tinggi' : null;
+                                                    selected ? 'a' : null;
                                               });
                                             },
                                           ),
@@ -365,13 +397,13 @@ class _HomePageState extends State<HomePage> {
                                             selectedColor: Theme.of(context)
                                                 .colorScheme
                                                 .onTertiary,
-                                            label: Text("Sedang"),
-                                            selected: selectedPriorityFilter ==
-                                                'sedang',
+                                            label: Text("Mid"),
+                                            selected:
+                                                selectedPriorityFilter == 'b',
                                             onSelected: (selected) {
                                               setState(() {
                                                 selectedPriorityFilter =
-                                                    selected ? 'sedang' : null;
+                                                    selected ? 'b' : null;
                                               });
                                             },
                                           ),
@@ -380,13 +412,13 @@ class _HomePageState extends State<HomePage> {
                                             selectedColor: Theme.of(context)
                                                 .colorScheme
                                                 .onTertiary,
-                                            label: Text("Rendah"),
-                                            selected: selectedPriorityFilter ==
-                                                'rendah',
+                                            label: Text("Low"),
+                                            selected:
+                                                selectedPriorityFilter == 'c',
                                             onSelected: (selected) {
                                               setState(() {
                                                 selectedPriorityFilter =
-                                                    selected ? 'rendah' : null;
+                                                    selected ? 'c' : null;
                                               });
                                             },
                                           ),
@@ -488,11 +520,17 @@ class _HomePageState extends State<HomePage> {
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
-                                  return Center(
-                                      child: CircularProgressIndicator(
+                                  return Column(
+                                    children: [
+                                      SizedBox(
+                                        height: height * 0.30,
+                                      ),
+                                      CircularProgressIndicator(
                                           color: Theme.of(context)
                                               .colorScheme
-                                              .onPrimary));
+                                              .onPrimary),
+                                    ],
+                                  );
                                 }
                                 if (snapshot.hasData &&
                                     snapshot.data!.snapshot.value != null) {
@@ -526,13 +564,13 @@ class _HomePageState extends State<HomePage> {
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 SvgPicture.asset(
-                                                    height: 220.0,
-                                                    width: 220.0,
+                                                    height: height * 0.30,
+                                                    width: width * 0.61,
                                                     state
                                                         ? 'assets/svg/no_white.svg'
                                                         : 'assets/svg/no_dark.svg'),
                                                 Text(
-                                                  'Tidak Ada Pencarian Yang Cocok',
+                                                  'No Matching Results Found',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontWeight:
@@ -543,7 +581,7 @@ class _HomePageState extends State<HomePage> {
                                                           .onPrimary),
                                                 ),
                                                 Text(
-                                                  'pastikan kamu mengetik keyword dengan benar',
+                                                  'Make sure you typed the keyword correctly',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontWeight:
@@ -553,7 +591,7 @@ class _HomePageState extends State<HomePage> {
                                                           .colorScheme
                                                           .onPrimary),
                                                 ),
-                                                SizedBox(
+                                                const SizedBox(
                                                   height: 50,
                                                 )
                                               ],
@@ -593,413 +631,421 @@ class _HomePageState extends State<HomePage> {
                                     }
                                   }
                                   listCount = sortedList.length;
-
-                                  return ListView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount: filteredList.length,
-                                    itemBuilder: (context, index) {
-                                      final tod = Map<String, dynamic>.from(
-                                          filteredList[index].value);
-                                      final key = filteredList[index].key;
-                                      tod['key'] = key;
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 10, vertical: 0),
-                                        child: BlocBuilder<DateCubit,
-                                            List<String>>(
-                                          builder: (context, state) {
-                                            if (dateClick != date) {
-                                              return Card(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .primaryContainer
-                                                      .withOpacity(1),
-                                                  child: Container(
-                                                    width: width * 0.90,
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10)),
-                                                    child: Padding(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                          horizontal: 12.0,
-                                                          vertical: 8),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Expanded(
-                                                            child: Column(
+                                  return filteredList.isEmpty
+                                      ? Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              height: height * 0.15,
+                                            ),
+                                            SizedBox(
+                                              height: height * 0.30,
+                                              width: width * 0.61,
+                                              child: ClipRRect(
+                                                  child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: SvgPicture.asset(
+                                                  'assets/svg/no_dark.svg',
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              )),
+                                            ),
+                                            Text(
+                                              'Filter is Empty\nTry Another Keywords!',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16),
+                                            ),
+                                            Text(
+                                              'Make sure your filter keyword is accurate',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onPrimary
+                                                    .withOpacity(0.7),
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      : ListView.builder(
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          itemCount: filteredList.length,
+                                          itemBuilder: (context, index) {
+                                            final tod =
+                                                Map<String, dynamic>.from(
+                                                    filteredList[index].value);
+                                            final key = filteredList[index].key;
+                                            tod['key'] = key;
+                                            return Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 10,
+                                                      vertical: 0),
+                                              child: BlocBuilder<DateCubit,
+                                                  List<String>>(
+                                                builder: (context, state) {
+                                                  if (dateClick != date) {
+                                                    return Card(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .primaryContainer
+                                                            .withOpacity(1),
+                                                        child: Container(
+                                                          width: width * 0.90,
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10)),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                        12.0,
+                                                                    vertical:
+                                                                        8),
+                                                            child: Row(
                                                               mainAxisAlignment:
                                                                   MainAxisAlignment
-                                                                      .start,
+                                                                      .spaceBetween,
                                                               crossAxisAlignment:
                                                                   CrossAxisAlignment
                                                                       .start,
                                                               children: [
-                                                                Text(
-                                                                  "${tod['title']}:",
-                                                                  style: TextStyle(
-                                                                      color: tod['isCompleted'] !=
-                                                                              false
-                                                                          ? Theme.of(context)
-                                                                              .colorScheme
-                                                                              .onPrimary
-                                                                          : Theme.of(context)
-                                                                              .colorScheme
-                                                                              .onSecondary,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w900,
-                                                                      fontSize:
-                                                                          17),
+                                                                Expanded(
+                                                                  child: Column(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .start,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      Text(
+                                                                        "${tod['title']}:",
+                                                                        style: TextStyle(
+                                                                            color: tod['isCompleted'] != false
+                                                                                ? Theme.of(context).colorScheme.onPrimary
+                                                                                : Theme.of(context).colorScheme.onSecondary,
+                                                                            fontWeight: FontWeight.w900,
+                                                                            fontSize: 17),
+                                                                      ),
+                                                                      Text(
+                                                                        tod['desc'],
+                                                                        style: TextStyle(
+                                                                            color: tod['isCompleted'] != false
+                                                                                ? Theme.of(context).colorScheme.onPrimary
+                                                                                : Theme.of(context).colorScheme.onSecondary,
+                                                                            fontWeight: FontWeight.normal,
+                                                                            fontSize: 17),
+                                                                      ),
+                                                                    ],
+                                                                  ),
                                                                 ),
-                                                                Text(
-                                                                  tod['desc'],
-                                                                  style: TextStyle(
-                                                                      color: tod['isCompleted'] !=
-                                                                              false
-                                                                          ? Theme.of(context)
-                                                                              .colorScheme
-                                                                              .onPrimary
-                                                                          : Theme.of(context)
-                                                                              .colorScheme
-                                                                              .onSecondary,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .normal,
-                                                                      fontSize:
-                                                                          17),
-                                                                ),
+                                                                Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .all(
+                                                                          8.0),
+                                                                  child: buildPriorityWidget(
+                                                                      tod['priorty'],
+                                                                      tod['datetime'],
+                                                                      tod['isCompleted']),
+                                                                )
                                                               ],
                                                             ),
                                                           ),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: buildPriorityWidget(
-                                                                tod['priorty'],
-                                                                tod['datetime'],
-                                                                tod['isCompleted']),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ));
-                                            }
-                                            return Dismissible(
-                                              key: Key(key),
-                                              direction:
-                                                  DismissDirection.endToStart,
-                                              confirmDismiss: (direction) {
-                                                return showDialog(
-                                                  context: context,
-                                                  builder: (context) =>
-                                                      AlertDialog(
-                                                    title: const Text(
-                                                        'Hapus Item ini?'),
-                                                    content: const Text(
-                                                        'Apakah Kamu Yakin Ingin Menghapus Item Ini?'),
-                                                    actions: [
-                                                      TextButton(
-                                                          onPressed: () {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop(false);
-                                                          },
-                                                          child: const Text(
-                                                              'Tidak')),
-                                                      TextButton(
-                                                          onPressed: () {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop(true);
-                                                            context
-                                                                .read<
-                                                                    TodoBloc>()
-                                                                .add(DeleteTodo(
-                                                                    key));
-                                                            ScaffoldMessenger.of(context).showSnackBar(
-                                                                SnackBar(
-                                                                    backgroundColor: Theme.of(
-                                                                            context)
-                                                                        .colorScheme
-                                                                        .error,
-                                                                    duration:
-                                                                        Durations
-                                                                            .extralong2,
-                                                                    content:
-                                                                        Text(
-                                                                      'Berhasil Menghapus Todo',
-                                                                      style: TextStyle(
-                                                                          color: Theme.of(context)
+                                                        ));
+                                                  }
+                                                  return Dismissible(
+                                                    key: Key(key),
+                                                    direction: DismissDirection
+                                                        .endToStart,
+                                                    confirmDismiss:
+                                                        (direction) {
+                                                      return showDialog(
+                                                        context: context,
+                                                        builder: (context) =>
+                                                            AlertDialog(
+                                                          title: Text(
+                                                              style: TextStyle(
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .colorScheme
+                                                                      .primary),
+                                                              'Hapus Item ini?'),
+                                                          content: Text(
+                                                              style: TextStyle(
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .colorScheme
+                                                                      .primary),
+                                                              'Apakah Kamu Yakin Ingin Menghapus Item Ini?'),
+                                                          actions: [
+                                                            TextButton(
+                                                                onPressed: () {
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop(
+                                                                          false);
+                                                                },
+                                                                child: const Text(
+                                                                    'Tidak')),
+                                                            TextButton(
+                                                                onPressed: () {
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop(
+                                                                          true);
+                                                                  context
+                                                                      .read<
+                                                                          TodoBloc>()
+                                                                      .add(DeleteTodo(
+                                                                          key));
+                                                                  ScaffoldMessenger.of(context).showSnackBar(
+                                                                      SnackBar(
+                                                                          backgroundColor: Theme.of(context)
                                                                               .colorScheme
-                                                                              .onError),
-                                                                    )));
-                                                          },
-                                                          child: const Text(
-                                                              'Ya, Hapus')),
-                                                    ],
-                                                  ),
-                                                );
-                                              },
-                                              child: InkWell(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                child: Card(
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .primaryContainer
-                                                        .withOpacity(1),
-                                                    child: Container(
-                                                      width: width * 0.90,
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      10)),
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                                horizontal:
-                                                                    12.0,
-                                                                vertical: 8),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Expanded(
-                                                              child: Column(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .start,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  Text(
-                                                                    "${tod['title']}:",
-                                                                    style: TextStyle(
-                                                                        color: tod['isCompleted'] !=
-                                                                                false
-                                                                            ? Theme.of(context)
-                                                                                .colorScheme
-                                                                                .onSecondary
-                                                                            : Theme.of(context)
-                                                                                .colorScheme
-                                                                                .onPrimary,
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .w900,
-                                                                        fontSize:
-                                                                            17),
-                                                                  ),
-                                                                  Text(
-                                                                    tod['desc'],
-                                                                    style: TextStyle(
-                                                                        color: tod['isCompleted'] !=
-                                                                                false
-                                                                            ? Theme.of(context)
-                                                                                .colorScheme
-                                                                                .onSecondary
-                                                                            : Theme.of(context)
-                                                                                .colorScheme
-                                                                                .onPrimary,
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .normal,
-                                                                        fontSize:
-                                                                            17),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(8.0),
-                                                              child: buildPriorityWidget(
-                                                                  tod['priorty'],
-                                                                  tod['datetime'],
-                                                                  tod['isCompleted']),
-                                                            )
+                                                                              .error,
+                                                                          duration: Durations
+                                                                              .extralong2,
+                                                                          behavior: SnackBarBehavior
+                                                                              .floating,
+                                                                          content:
+                                                                              Text(
+                                                                            'Berhasil Menghapus Todo',
+                                                                            style:
+                                                                                TextStyle(color: Theme.of(context).colorScheme.onError),
+                                                                          )));
+                                                                },
+                                                                child: const Text(
+                                                                    'Ya, Hapus')),
                                                           ],
                                                         ),
-                                                      ),
-                                                    )),
-                                                onTap: () {
-                                                  context
-                                                      .read<TodoCubit>()
-                                                      .changetod(key);
-                                                },
-                                                onLongPress: () {
-                                                  titleC.text = tod['title'];
-                                                  desC.text = tod['desc'];
-                                                  rty.text = tod['priorty'];
-                                                  showModalBottomSheet(
-                                                      backgroundColor:
-                                                          Theme.of(context)
+                                                      );
+                                                    },
+                                                    child: InkWell(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      child: Card(
+                                                          color: Theme.of(
+                                                                  context)
                                                               .colorScheme
-                                                              .primaryContainer,
-                                                      context: context,
-                                                      isScrollControlled: true,
-                                                      builder: (context) =>
-                                                          SingleChildScrollView(
-                                                            child: SizedBox(
-                                                              height:
-                                                                  height * 0.50,
-                                                              child: Column(
+                                                              .primaryContainer
+                                                              .withOpacity(1),
+                                                          child: Container(
+                                                            width: width * 0.90,
+                                                            decoration: BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10)),
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .symmetric(
+                                                                      horizontal:
+                                                                          12.0,
+                                                                      vertical:
+                                                                          8),
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
                                                                 crossAxisAlignment:
                                                                     CrossAxisAlignment
                                                                         .start,
                                                                 children: [
-                                                                  SizedBox(
-                                                                    height: 10,
+                                                                  Expanded(
+                                                                    child:
+                                                                        Column(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .start,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        Text(
+                                                                          "${tod['title']}:",
+                                                                          style: TextStyle(
+                                                                              color: tod['isCompleted'] != false ? Theme.of(context).colorScheme.onSecondary : Theme.of(context).colorScheme.onPrimary,
+                                                                              fontWeight: FontWeight.w900,
+                                                                              fontSize: 17),
+                                                                        ),
+                                                                        Text(
+                                                                          tod['desc'],
+                                                                          style: TextStyle(
+                                                                              color: tod['isCompleted'] != false ? Theme.of(context).colorScheme.onSecondary : Theme.of(context).colorScheme.onPrimary,
+                                                                              fontWeight: FontWeight.normal,
+                                                                              fontSize: 17),
+                                                                        ),
+                                                                      ],
+                                                                    ),
                                                                   ),
                                                                   Padding(
-                                                                    padding: const EdgeInsets
-                                                                        .symmetric(
-                                                                        horizontal:
-                                                                            12.0,
-                                                                        vertical:
-                                                                            8),
-                                                                    child: Text(
-                                                                      'Edit Somthing?',
-                                                                      style: TextStyle(
-                                                                          color: Theme.of(context)
-                                                                              .colorScheme
-                                                                              .onPrimary,
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          fontSize:
-                                                                              19),
-                                                                    ),
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 0,
-                                                                  ),
-                                                                  MyTextField(
-                                                                      controller:
-                                                                          titleC,
-                                                                      input:
-                                                                          'Title',
-                                                                      maxlines:
-                                                                          2,
-                                                                      desc:
-                                                                          'Donatss?'),
-                                                                  MyTextField(
-                                                                      controller:
-                                                                          desC,
-                                                                      input:
-                                                                          'Title',
-                                                                      maxlines:
-                                                                          2,
-                                                                      desc:
-                                                                          'Cookneate'),
-                                                                  Padding(
-                                                                    padding: const EdgeInsets
-                                                                        .symmetric(
-                                                                        horizontal:
-                                                                            20.0),
-                                                                    child:
-                                                                        SizedBox(
-                                                                      width:
-                                                                          200,
-                                                                      child:
-                                                                          DropdownButtonFormField(
-                                                                        menuMaxHeight:
-                                                                            200,
-                                                                        dropdownColor: Theme.of(context)
-                                                                            .colorScheme
-                                                                            .secondary,
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(20),
-                                                                        style: TextStyle(
-                                                                            color:
-                                                                                Theme.of(context).colorScheme.onPrimary),
-                                                                        decoration: InputDecoration(
-                                                                            enabledBorder:
-                                                                                OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary)),
-                                                                            focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.outline))),
-                                                                        hint: Text(
-                                                                            rty.text),
-                                                                        isExpanded:
-                                                                            true,
-                                                                        value:
-                                                                            isSelected,
-                                                                        items: priorty
-                                                                            .map((e) =>
-                                                                                DropdownMenuItem(value: e, child: Text(e)))
-                                                                            .toList(),
-                                                                        onChanged:
-                                                                            (value) {
-                                                                              print(value);
-                                                                          rty.text =
-                                                                              value.toString();
-                                                                        },
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                  Center(
-                                                                    child:
-                                                                        Padding(
-                                                                      padding: const EdgeInsets
-                                                                          .all(
-                                                                          15.0),
-                                                                      child: BlocListener<
-                                                                          TodoBloc,
-                                                                          TodoState>(
-                                                                        listener:
-                                                                            (context,
-                                                                                state) {
-                                                                          if (state
-                                                                              is Todoloaded) {
-                                                                            Navigator.of(context).pop();
-                                                                          }
-                                                                        },
-                                                                        child: ElevatedButton(
-                                                                            onPressed: () {
-                                                                              if (titleC.text.isNotEmpty || desC.text.isNotEmpty || rty.text.isNotEmpty) {
-                                                                                context.read<TodoBloc>().add(UpdateTodo(title: titleC.text, desc: desC.text, key: key, rty: rty.text));
-                                                                              } else {
-                                                                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating, duration: Durations.long3, content: Text('Please fill all Empty Fields')));
-                                                                              }
-                                                                            },
-                                                                            style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.onPrimary),
-                                                                            child: Padding(
-                                                                              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                                                                              child: Text(
-                                                                                'Done',
-                                                                                style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),
-                                                                              ),
-                                                                            )),
-                                                                      ),
-                                                                    ),
-                                                                  ),
+                                                                    padding:
+                                                                        const EdgeInsets
+                                                                            .all(
+                                                                            8.0),
+                                                                    child: buildPriorityWidget(
+                                                                        tod['priorty'],
+                                                                        tod['datetime'],
+                                                                        tod['isCompleted']),
+                                                                  )
                                                                 ],
                                                               ),
                                                             ),
-                                                          ));
+                                                          )),
+                                                      onTap: () {
+                                                        context
+                                                            .read<TodoCubit>()
+                                                            .changetod(key);
+                                                      },
+                                                      onLongPress: () {
+                                                        titleC.text =
+                                                            tod['title'];
+                                                        desC.text = tod['desc'];
+                                                        rty.text =
+                                                            tod['priorty'];
+                                                        showModalBottomSheet(
+                                                            backgroundColor: Theme
+                                                                    .of(context)
+                                                                .colorScheme
+                                                                .primaryContainer,
+                                                            context: context,
+                                                            isScrollControlled:
+                                                                true,
+                                                            builder: (context) =>
+                                                                SingleChildScrollView(
+                                                                  child:
+                                                                      SizedBox(
+                                                                    height:
+                                                                        height *
+                                                                            0.50,
+                                                                    child:
+                                                                        Column(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        SizedBox(
+                                                                          height:
+                                                                              10,
+                                                                        ),
+                                                                        Padding(
+                                                                          padding: const EdgeInsets
+                                                                              .symmetric(
+                                                                              horizontal: 12.0,
+                                                                              vertical: 8),
+                                                                          child:
+                                                                              Text(
+                                                                            'Edit Somthing?',
+                                                                            style: TextStyle(
+                                                                                color: Theme.of(context).colorScheme.onPrimary,
+                                                                                fontWeight: FontWeight.bold,
+                                                                                fontSize: 19),
+                                                                          ),
+                                                                        ),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              0,
+                                                                        ),
+                                                                        MyTextField(
+                                                                            controller:
+                                                                                titleC,
+                                                                            input:
+                                                                                'Title',
+                                                                            maxlines:
+                                                                                2,
+                                                                            desc:
+                                                                                'Donatss?'),
+                                                                        MyTextField(
+                                                                            controller:
+                                                                                desC,
+                                                                            input:
+                                                                                'Title',
+                                                                            maxlines:
+                                                                                2,
+                                                                            desc:
+                                                                                'Cookneate'),
+                                                                        Padding(
+                                                                          padding: const EdgeInsets
+                                                                              .symmetric(
+                                                                              horizontal: 20.0),
+                                                                          child:
+                                                                              SizedBox(
+                                                                            width:
+                                                                                200,
+                                                                            child:
+                                                                                DropdownButtonFormField(
+                                                                              menuMaxHeight: 200,
+                                                                              dropdownColor: Theme.of(context).colorScheme.secondary,
+                                                                              borderRadius: BorderRadius.circular(20),
+                                                                              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                                                                              decoration: InputDecoration(enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.outline))),
+                                                                              hint: Text(rty.text),
+                                                                              isExpanded: true,
+                                                                              value: isSelected,
+                                                                              items: priorty.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+                                                                              onChanged: (value) {
+                                                                                print(value);
+                                                                                rty.text = value.toString();
+                                                                              },
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                        Center(
+                                                                          child:
+                                                                              Padding(
+                                                                            padding:
+                                                                                const EdgeInsets.all(15.0),
+                                                                            child:
+                                                                                BlocListener<TodoBloc, TodoState>(
+                                                                              listener: (context, state) {
+                                                                                if (state is Todoloaded) {
+                                                                                  Navigator.of(context).pop();
+                                                                                }
+                                                                              },
+                                                                              child: ElevatedButton(
+                                                                                  onPressed: () {
+                                                                                    if (titleC.text.isNotEmpty || desC.text.isNotEmpty || rty.text.isNotEmpty) {
+                                                                                      context.read<TodoBloc>().add(UpdateTodo(title: titleC.text, desc: desC.text, key: key, rty: rty.text));
+                                                                                    } else {
+                                                                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating, duration: Durations.long3, content: Text('Please fill all Empty Fields')));
+                                                                                    }
+                                                                                  },
+                                                                                  style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.onPrimary),
+                                                                                  child: Padding(
+                                                                                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                                                                    child: Text(
+                                                                                      'Done',
+                                                                                      style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),
+                                                                                    ),
+                                                                                  )),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ));
+                                                      },
+                                                    ),
+                                                  );
                                                 },
                                               ),
                                             );
                                           },
-                                        ),
-                                      );
-                                    },
-                                  );
+                                        );
                                 } else {
                                   return Center(
                                       child: Column(
@@ -1106,7 +1152,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
 
 class MyText extends StatelessWidget {
   String text;
