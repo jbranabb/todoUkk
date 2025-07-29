@@ -274,7 +274,7 @@ class _HomePageState extends State<HomePage> {
                                                 .colorScheme
                                                 .onPrimary)
                                         : TextStyle(
-                                            fontSize: 13,
+                                            fontSize: 14,
                                             fontWeight: FontWeight.normal,
                                             color: Theme.of(context)
                                                 .colorScheme
@@ -292,7 +292,7 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             SizedBox(
-                height: 45,
+                height: 50,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -609,6 +609,91 @@ class _HomePageState extends State<HomePage> {
                                         child: BlocBuilder<DateCubit,
                                             List<String>>(
                                           builder: (context, state) {
+                                            if (dateClick != date) {
+                                              return Card(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primaryContainer
+                                                      .withOpacity(1),
+                                                  child: Container(
+                                                    width: width * 0.90,
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10)),
+                                                    child: Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 12.0,
+                                                          vertical: 8),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Expanded(
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Text(
+                                                                  "${tod['title']}:",
+                                                                  style: TextStyle(
+                                                                      color: tod['isCompleted'] !=
+                                                                              false
+                                                                          ? Theme.of(context)
+                                                                              .colorScheme
+                                                                              .onPrimary
+                                                                          : Theme.of(context)
+                                                                              .colorScheme
+                                                                              .onSecondary,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w900,
+                                                                      fontSize:
+                                                                          17),
+                                                                ),
+                                                                Text(
+                                                                  tod['desc'],
+                                                                  style: TextStyle(
+                                                                      color: tod['isCompleted'] !=
+                                                                              false
+                                                                          ? Theme.of(context)
+                                                                              .colorScheme
+                                                                              .onPrimary
+                                                                          : Theme.of(context)
+                                                                              .colorScheme
+                                                                              .onSecondary,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal,
+                                                                      fontSize:
+                                                                          17),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: buildPriorityWidget(
+                                                                tod['priorty'],
+                                                                tod['datetime'],
+                                                                tod['isCompleted']),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ));
+                                            }
                                             return Dismissible(
                                               key: Key(key),
                                               direction:
@@ -711,10 +796,10 @@ class _HomePageState extends State<HomePage> {
                                                                                 false
                                                                             ? Theme.of(context)
                                                                                 .colorScheme
-                                                                                .onPrimary
+                                                                                .onSecondary
                                                                             : Theme.of(context)
                                                                                 .colorScheme
-                                                                                .onSecondary,
+                                                                                .onPrimary,
                                                                         fontWeight:
                                                                             FontWeight
                                                                                 .w900,
@@ -728,10 +813,10 @@ class _HomePageState extends State<HomePage> {
                                                                                 false
                                                                             ? Theme.of(context)
                                                                                 .colorScheme
-                                                                                .onPrimary
+                                                                                .onSecondary
                                                                             : Theme.of(context)
                                                                                 .colorScheme
-                                                                                .onSecondary,
+                                                                                .onPrimary,
                                                                         fontWeight:
                                                                             FontWeight
                                                                                 .normal,
@@ -764,14 +849,17 @@ class _HomePageState extends State<HomePage> {
                                                   desC.text = tod['desc'];
                                                   rty.text = tod['priorty'];
                                                   showModalBottomSheet(
-                                                    backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                                                      backgroundColor:
+                                                          Theme.of(context)
+                                                              .colorScheme
+                                                              .primaryContainer,
                                                       context: context,
                                                       isScrollControlled: true,
                                                       builder: (context) =>
                                                           SingleChildScrollView(
                                                             child: SizedBox(
                                                               height:
-                                                                  height * 0.55,
+                                                                  height * 0.50,
                                                               child: Column(
                                                                 crossAxisAlignment:
                                                                     CrossAxisAlignment
@@ -790,7 +878,9 @@ class _HomePageState extends State<HomePage> {
                                                                     child: Text(
                                                                       'Edit Somthing?',
                                                                       style: TextStyle(
-                                                                        color: Theme.of(context).colorScheme.onPrimary,
+                                                                          color: Theme.of(context)
+                                                                              .colorScheme
+                                                                              .onPrimary,
                                                                           fontWeight: FontWeight
                                                                               .bold,
                                                                           fontSize:
@@ -808,7 +898,7 @@ class _HomePageState extends State<HomePage> {
                                                                       maxlines:
                                                                           2,
                                                                       desc:
-                                                                          'Bakso'),
+                                                                          'Donatss?'),
                                                                   MyTextField(
                                                                       controller:
                                                                           desC,
@@ -817,7 +907,7 @@ class _HomePageState extends State<HomePage> {
                                                                       maxlines:
                                                                           2,
                                                                       desc:
-                                                                          'Bakso'),
+                                                                          'Cookneate'),
                                                                   Padding(
                                                                     padding: const EdgeInsets
                                                                         .symmetric(
@@ -862,43 +952,39 @@ class _HomePageState extends State<HomePage> {
                                                                     ),
                                                                   ),
                                                                   Center(
-                                                                    child: Padding(
-                                                                      padding: const EdgeInsets.all(15.0),
-                                                                      child: ElevatedButton(
-                                                                          onPressed:
-                                                                              () {
-                                                                            if (titleC.text.isNotEmpty ||
-                                                                                desC.text.isNotEmpty ||
-                                                                                rty.text.isNotEmpty) {
-                                                                                  context.read<TodoBloc>().add(
-                                                                                    UpdateTodo(title: titleC.text, desc: desC.text, key: key,
-                                                                                     rty: rty.text)
-                                                                                    );
-                                                                            } else {
-                                                                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                                                                  behavior: SnackBarBehavior.floating,
-                                                                                  duration: Durations.long3,
-                                                                                  content: Text('Please fill all Empty Fields')));
-                                                                            }
-                                                                          },
-                                                                          style: ElevatedButton.styleFrom(
-                                                                              backgroundColor: Theme.of(context)
-                                                                                  .colorScheme
-                                                                                  .onPrimary),
-                                                                          child:
-                                                                              Padding(
-                                                                            padding: const EdgeInsets
-                                                                                .symmetric(
-                                                                                horizontal:
-                                                                                    10.0),
-                                                                            child:
-                                                                                Text(
-                                                                              'Done',
-                                                                              style: TextStyle(
-                                                                                  fontWeight: FontWeight.bold,
-                                                                                  color: Theme.of(context).colorScheme.primary),
-                                                                            ),
-                                                                          )),
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: const EdgeInsets
+                                                                          .all(
+                                                                          15.0),
+                                                                      child: BlocListener<
+                                                                          TodoBloc,
+                                                                          TodoState>(
+                                                                        listener:
+                                                                            (context,
+                                                                                state) {
+                                                                          if (state
+                                                                              is Todoloaded) {
+                                                                            Navigator.of(context).pop();
+                                                                          }
+                                                                        },
+                                                                        child: ElevatedButton(
+                                                                            onPressed: () {
+                                                                              if (titleC.text.isNotEmpty || desC.text.isNotEmpty || rty.text.isNotEmpty) {
+                                                                                context.read<TodoBloc>().add(UpdateTodo(title: titleC.text, desc: desC.text, key: key, rty: rty.text));
+                                                                              } else {
+                                                                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating, duration: Durations.long3, content: Text('Please fill all Empty Fields')));
+                                                                              }
+                                                                            },
+                                                                            style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.onPrimary),
+                                                                            child: Padding(
+                                                                              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                                                              child: Text(
+                                                                                'Done',
+                                                                                style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),
+                                                                              ),
+                                                                            )),
+                                                                      ),
                                                                     ),
                                                                   ),
                                                                 ],
@@ -1061,8 +1147,8 @@ class ContainerPriorty extends StatelessWidget {
           time,
           style: TextStyle(
               color: status != false
-                  ? Theme.of(context).colorScheme.onPrimary
-                  : Theme.of(context).colorScheme.onSecondary,
+                  ? Theme.of(context).colorScheme.onSecondary
+                  : Theme.of(context).colorScheme.onPrimary,
               fontSize: 12,
               fontWeight: FontWeight.bold),
         ),
@@ -1075,8 +1161,8 @@ class ContainerPriorty extends StatelessWidget {
           decoration: BoxDecoration(
               border: Border.all(
                   color: status != false
-                      ? Theme.of(context).colorScheme.onSurface
-                      :  Colors.transparent),
+                      ? Colors.transparent
+                      : Theme.of(context).colorScheme.onSurface),
               color: Theme.of(context).colorScheme.primaryContainer,
               borderRadius: BorderRadius.circular(5)),
           child: Center(
@@ -1084,8 +1170,8 @@ class ContainerPriorty extends StatelessWidget {
               label,
               style: TextStyle(
                   color: status != false
-                      ? Theme.of(context).colorScheme.onPrimary
-                      : Theme.of(context).colorScheme.onSecondary,
+                      ? Theme.of(context).colorScheme.onSecondary
+                      : Theme.of(context).colorScheme.onPrimary,
                   fontSize: 12,
                   fontWeight: FontWeight.bold),
             ),

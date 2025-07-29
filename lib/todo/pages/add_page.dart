@@ -150,6 +150,7 @@ class MyTextField extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
       child: Container(
         child: TextField(
+          cursorColor: Theme.of(context).colorScheme.onPrimary,
             controller: controller,
             minLines: 1,
             style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),

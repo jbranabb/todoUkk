@@ -38,6 +38,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
         var tod =
             Todo(title: event.title, desc: event.desc, rty: event.rty).toJson();
         dbref.child(event.key).update(tod);
+        emit(Todoloaded());
       } catch (e) {
         emit(TodoErorr(e.toString()));
       }
