@@ -80,3 +80,28 @@ class MyText extends StatelessWidget {
     );
   }
 }
+
+String fromPrty(String text){
+ switch(text){
+    case == 'a':
+    return text = 'High';
+    case  == 'b':
+    return text = 'Mid';  
+    case  == 'c':
+    return text = 'Low';
+    default:
+    return text = 'Select The Priorty';  
+  }
+}
+String toPrty(String text){
+ switch(text.toLowerCase()){
+    case == 'high':
+    return text = 'a';
+    case  == 'mid':
+   return text = 'b';  
+    case  == 'low':
+   return text = 'c';
+    default:
+    return text = 'Select The Priorty';  
+  }
+}

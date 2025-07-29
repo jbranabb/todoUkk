@@ -32,13 +32,14 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
         emit(TodoInitial());
         emit(TodoErorr(e.toString()));
       }
-    });
+    }); 
     on<UpdateTodo>((event, emit) {
       try {
         var tod =
             Todo(title: event.title, desc: event.desc, rty: event.rty).toJson();
         dbref.child(event.key).update(tod);
         emit(Todoloaded());
+        emit(TodoInitial());
       } catch (e) {
         emit(TodoErorr(e.toString()));
       }

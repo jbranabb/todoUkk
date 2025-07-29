@@ -73,16 +73,13 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
               onPressed: context.read<ThemeState>().saveData,
-              icon: BlocBuilder<ThemeState, bool>(
-                  builder: (context, state){
-                    print(state);
-                  return Icon(
-                        state ? Icons.sunny : Icons.dark_mode,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      );
-                  } 
-                      
-                      )),
+              icon: BlocBuilder<ThemeState, bool>(builder: (context, state) {
+                print(state);
+                return Icon(
+                  state ? Icons.sunny : Icons.dark_mode,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                );
+              })),
           InkWell(
             onTap: () {
               showDialog(
@@ -120,7 +117,10 @@ class _HomePageState extends State<HomePage> {
                     ElevatedButton(
                         onPressed: () {
                           context.read<AuthBloc>().add(LogOut());
-                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginPage() ,  ));
+                          Navigator.of(context)
+                              .pushReplacement(MaterialPageRoute(
+                            builder: (context) => LoginPage(),
+                          ));
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor:
@@ -356,6 +356,7 @@ class _HomePageState extends State<HomePage> {
                     IconButton(
                       onPressed: () {
                         showModalBottomSheet(
+                          isScrollControlled: true,
                           context: context,
                           builder: (context) => StatefulBuilder(
                             builder: (context, setState) {
@@ -436,7 +437,7 @@ class _HomePageState extends State<HomePage> {
                                           ),
                                         ],
                                       ),
-                                     const SizedBox(height: 16),
+                                      const SizedBox(height: 16),
                                       // Filter Status
                                       CheckboxListTile(
                                         title: Text(iscompledfilter
@@ -452,13 +453,13 @@ class _HomePageState extends State<HomePage> {
                                         },
                                       ),
 
-                                     const Spacer(),
+                                      const Spacer(),
                                       Row(
                                         children: [
                                           ElevatedButton(
                                             style: ElevatedButton.styleFrom(
                                                 backgroundColor:
-                                                   Colors.red.shade100),
+                                                    Colors.red.shade100),
                                             onPressed: () {
                                               iscompledfilter = false;
                                               context.read<TodoBloc>().add(Filter(
@@ -474,7 +475,7 @@ class _HomePageState extends State<HomePage> {
                                                     color:
                                                         Colors.red.shade900)),
                                           ),
-                                         const SizedBox(
+                                          const SizedBox(
                                             width: 10,
                                           ),
                                           ElevatedButton(
@@ -584,8 +585,7 @@ class _HomePageState extends State<HomePage> {
                                                 'No Matching Results Found',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w700,
+                                                    fontWeight: FontWeight.w700,
                                                     fontSize: 18,
                                                     color: Theme.of(context)
                                                         .colorScheme
@@ -595,8 +595,7 @@ class _HomePageState extends State<HomePage> {
                                                 'Make sure you typed the keyword correctly',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w400,
+                                                    fontWeight: FontWeight.w400,
                                                     fontSize: 15,
                                                     color: Theme.of(context)
                                                         .colorScheme
@@ -662,7 +661,7 @@ class _HomePageState extends State<HomePage> {
                                                 ),
                                               )),
                                             ),
-                                          const Text(
+                                            const Text(
                                               'Filter is Empty\nTry Another Keywords!',
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
@@ -806,8 +805,9 @@ class _HomePageState extends State<HomePage> {
                                                                       .pop(
                                                                           false);
                                                                 },
-                                                                child: const Text(
-                                                                    'Nope')),
+                                                                child:
+                                                                    const Text(
+                                                                        'Nope')),
                                                             TextButton(
                                                                 onPressed: () {
                                                                   Navigator.of(
@@ -934,120 +934,102 @@ class _HomePageState extends State<HomePage> {
                                                             context: context,
                                                             isScrollControlled:
                                                                 true,
-                                                            builder: (context) =>
-                                                                SingleChildScrollView(
-                                                                  child:
-                                                                      SizedBox(
-                                                                    height:
-                                                                        height *
-                                                                            0.50,
-                                                                    child:
-                                                                        Column(
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
-                                                                      children: [
-                                                                        const SizedBox(
-                                                                          height:
-                                                                              10,
-                                                                        ),
-                                                                        Padding(
-                                                                          padding: const EdgeInsets
-                                                                              .symmetric(
-                                                                              horizontal: 12.0,
-                                                                              vertical: 8),
+                                                            builder:
+                                                                (context) =>
+                                                                    Padding(
+                                                                      padding:
+                                                                          EdgeInsets
+                                                                              .only(
+                                                                        bottom: MediaQuery.of(context)
+                                                                            .viewInsets
+                                                                            .bottom,
+                                                                      ),
+                                                                      child:
+                                                                          SingleChildScrollView(
+                                                                        child:
+                                                                            SizedBox(
                                                                           child:
-                                                                              Text(
-                                                                            'Edit Somthing?',
-                                                                            style: TextStyle(
-                                                                                color: Theme.of(context).colorScheme.onPrimary,
-                                                                                fontWeight: FontWeight.bold,
-                                                                                fontSize: 19),
-                                                                          ),
-                                                                        ),
-                                                                        const SizedBox(
-                                                                          height:
-                                                                              0,
-                                                                        ),
-                                                                        MyTextField(
-                                                                            controller:
-                                                                                titleC,
-                                                                            input:
-                                                                                'Title',
-                                                                            maxlines:
-                                                                                2,
-                                                                            desc:
-                                                                                'Donatss?'),
-                                                                        MyTextField(
-                                                                            controller:
-                                                                                desC,
-                                                                            input:
-                                                                                'Title',
-                                                                            maxlines:
-                                                                                2,
-                                                                            desc:
-                                                                                'Cookneate'),
-                                                                        Padding(
-                                                                          padding: const EdgeInsets
-                                                                              .symmetric(
-                                                                              horizontal: 20.0),
-                                                                          child:
-                                                                              SizedBox(
-                                                                            width:
-                                                                                200,
-                                                                            child:
-                                                                                DropdownButtonFormField(
-                                                                              menuMaxHeight: 200,
-                                                                              dropdownColor: Theme.of(context).colorScheme.secondary,
-                                                                              borderRadius: BorderRadius.circular(20),
-                                                                              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-                                                                              decoration: InputDecoration(enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.outline))),
-                                                                              hint: Text(rty.text),
-                                                                              isExpanded: true,
-                                                                              value: isSelected,
-                                                                              items: priorty.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
-                                                                              onChanged: (value) {
-                                                                                print(value);
-                                                                                rty.text = value.toString();
-                                                                              },
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                        Center(
-                                                                          child:
+                                                                              Column(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.min,
+                                                                            crossAxisAlignment:
+                                                                                CrossAxisAlignment.start,
+                                                                            children: [
+                                                                              const SizedBox(
+                                                                                height: 10,
+                                                                              ),
                                                                               Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.all(15.0),
-                                                                            child:
-                                                                                BlocListener<TodoBloc, TodoState>(
-                                                                              listener: (context, state) {
-                                                                                if (state is Todoloaded) {
-                                                                                  Navigator.of(context).pop();
-                                                                                }
-                                                                              },
-                                                                              child: ElevatedButton(
-                                                                                  onPressed: () {
-                                                                                    if (titleC.text.isNotEmpty || desC.text.isNotEmpty || rty.text.isNotEmpty) {
-                                                                                      context.read<TodoBloc>().add(UpdateTodo(title: titleC.text, desc: desC.text, key: key, rty: rty.text));
-                                                                                    } else {
-                                                                                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(behavior: SnackBarBehavior.floating, duration: Durations.long3, content: Text('Please fill all Empty Fields')));
-                                                                                    }
-                                                                                  },
-                                                                                  style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.onPrimary),
-                                                                                  child: Padding(
-                                                                                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                                                                                    child: Text(
-                                                                                      'Done',
-                                                                                      style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),
-                                                                                    ),
-                                                                                  )),
-                                                                            ),
+                                                                                padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+                                                                                child: Text(
+                                                                                  'Edit Somthing?',
+                                                                                  style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.bold, fontSize: 19),
+                                                                                ),
+                                                                              ),
+                                                                              const SizedBox(
+                                                                                height: 0,
+                                                                              ),
+                                                                              MyTextField(controller: titleC, input: 'Title', maxlines: 2, desc: 'Donatss?'),
+                                                                              MyTextField(controller: desC, input: 'Title', maxlines: 2, desc: 'Cookneate'),
+                                                                              Padding(
+                                                                                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                                                                                child: SizedBox(
+                                                                                  width: 200,
+                                                                                  child: DropdownButtonFormField(
+                                                                                    menuMaxHeight: 200,
+                                                                                    dropdownColor: Theme.of(context).colorScheme.secondary,
+                                                                                    borderRadius: BorderRadius.circular(20),
+                                                                                    style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                                                                                    decoration: InputDecoration(enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.outline))),
+                                                                                    hint: Text(fromPrty(rty.text)),
+                                                                                    isExpanded: true,
+                                                                                    value: isSelected,
+                                                                                    items: priorty.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+                                                                                    onChanged: (value) {
+                                                                                      // var valuesprty = toPrty(rty.text);
+                                                                                      //   print(valuesprty);
+                                                                                      rty.text = value.toString();
+                                                                                      print(rty.text);
+                                                                                    },
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Center(
+                                                                                child: Padding(
+                                                                                  padding: const EdgeInsets.all(15.0),
+                                                                                  child: BlocListener<TodoBloc, TodoState>(
+                                                                                    listener: (context, state) {
+                                                                                      if(state is Todoloaded){
+                                                                                     Navigator.of(context).pop();
+                                                                                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('SuccesFully  updating data'), behavior: SnackBarBehavior.floating,));
+                                                                                      }
+                                                                                     },
+                                                                                    child: ElevatedButton(
+                                                                                        onPressed: () {
+                                                                                          if (titleC.text.isNotEmpty || desC.text.isNotEmpty || rty.text.isNotEmpty) {
+                                                                                            var val = toPrty(rty.text);
+                                                                                            print('rty ${rty.text}');
+                                                                                            print('val $val');
+                                                                                            context.read<TodoBloc>().add(UpdateTodo(title: titleC.text, desc: desC.text, key: key, rty: val));
+                                                                                          } else {
+                                                                                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(behavior: SnackBarBehavior.floating, duration: Durations.long3, content: Text('Please fill all Empty Fields')));
+                                                                                          }
+                                                                                        },
+                                                                                        style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.onPrimary),
+                                                                                        child: Padding(
+                                                                                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                                                                          child: Text(
+                                                                                            'Done',
+                                                                                            style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),
+                                                                                          ),
+                                                                                        )),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
                                                                           ),
                                                                         ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                ));
+                                                                      ),
+                                                                    ));
                                                       },
                                                     ),
                                                   );
@@ -1160,7 +1142,5 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
 String? iselected;
-
-
-
