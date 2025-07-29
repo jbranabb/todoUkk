@@ -502,10 +502,10 @@ class _HomePageState extends State<HomePage> {
                                     ..sort((a, b) => b.value['datetime']
                                         .toString()
                                         .compareTo(a.value['datetime']))
-                                    ..sort((a, b) => b.value['priorty']
+                                    ..sort((a, b) => a.value['priorty']
                                         .toString()
                                         .compareTo(
-                                            a.value['priorty'].toString()));
+                                            b.value['priorty'].toString()));
                                   List<MapEntry<String, dynamic>> filteredList =
                                       sortedList;
                                   if (filteredList
@@ -888,7 +888,7 @@ class _HomePageState extends State<HomePage> {
                                                                     ),
                                                                   ),
                                                                   SizedBox(
-                                                                    height: 10,
+                                                                    height: 0,
                                                                   ),
                                                                   MyTextField(
                                                                       controller:
@@ -945,6 +945,7 @@ class _HomePageState extends State<HomePage> {
                                                                             .toList(),
                                                                         onChanged:
                                                                             (value) {
+                                                                              print(value);
                                                                           rty.text =
                                                                               value.toString();
                                                                         },
@@ -1106,11 +1107,6 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-List<String> priorty = [
-  'High',
-  'Mid',
-  'Low',
-];
 
 class MyText extends StatelessWidget {
   String text;
@@ -1187,11 +1183,11 @@ bool s = false;
 String? iselected;
 Widget buildPriorityWidget(String priority, String date, bool status) {
   switch (priority.toLowerCase()) {
-    case 'low':
+    case 'c':
       return ContainerPriorty(status: status, time: date, label: 'Low');
-    case 'mid':
+    case 'b':
       return ContainerPriorty(status: status, time: date, label: 'Mid');
-    case 'high':
+    case 'a':
       return ContainerPriorty(status: status, time: date, label: 'High');
     default:
       return ContainerPriorty(status: status, time: '', label: '');

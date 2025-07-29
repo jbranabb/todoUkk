@@ -3,14 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/bloc/todo/todo_bloc.dart';
 import 'package:todo/model/model.dart';
 
+  List<String> priorty = [
+  'High',
+  'Mid',
+  'Low',
+  ];
 class AddPage extends StatelessWidget {
   AddPage({super.key});
 
-  List<String> priorty = [
-    'High',
-    'Mid',
-    'Low',
-  ];
   @override
   Widget build(BuildContext context) {
     TextEditingController controllerTitle = TextEditingController();
@@ -99,10 +99,20 @@ class AddPage extends StatelessWidget {
                   if (controllerRty.text.isNotEmpty ||
                       controllerDesc.text.isNotEmpty ||
                       controllerTitle.text.isNotEmpty) {
+                       switch(controllerRty.text.toLowerCase()){
+                        case 'high':
+                        controllerRty.text = 'a';
+                        case 'mid':
+                        controllerRty.text = 'b';
+                        case 'low':
+                        controllerRty.text = 'c';
+                       }
                     context.read<TodoBloc>().add(PostTodo(
                         title: controllerTitle.text,
                         desc: controllerDesc.text,
                         rty: controllerRty.text));
+
+                        print(controllerRty.text);
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         behavior: SnackBarBehavior.floating,
