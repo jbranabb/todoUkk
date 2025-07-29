@@ -1,7 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:todo/bloc/todo/todo_bloc.dart';
-import 'package:todo/todo/pages/home_page.dart';
+import 'package:todo/todo/widgets/priorty_section.dart';
 
 class FilterPage extends StatelessWidget {
   FilterPage({super.key});
@@ -50,7 +50,7 @@ class FilterPage extends StatelessWidget {
                 },
               );
             }
-            return Center(
+            return const Center(
               child: Text('no data'),
             );
           },

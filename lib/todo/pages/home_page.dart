@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, deprecated_member_use
+
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,8 +14,8 @@ import 'package:todo/bloc/cuit/theme_cubit.dart';
 import 'package:todo/bloc/login/auth_bloc.dart';
 import 'package:todo/bloc/todo/todo_bloc.dart';
 import 'package:todo/bloc/todo/todo_cubit.dart';
-import 'package:todo/login/pages/login.dart';
 import 'package:todo/todo/pages/add_page.dart';
+import 'package:todo/todo/widgets/priorty_section.dart';
 
 late DatabaseReference dbref;
 FirebaseAuth auth = FirebaseAuth.instance;
@@ -69,12 +71,17 @@ class _HomePageState extends State<HomePage> {
         elevation: 0.0,
         actions: [
           IconButton(
-              onPressed: context.read<ThemeCubit>().changeTheme,
-              icon: BlocBuilder<ThemeCubit, bool>(
-                  builder: (context, state) => Icon(
+              onPressed: context.read<ThemeState>().saveData,
+              icon: BlocBuilder<ThemeState, bool>(
+                  builder: (context, state){
+                    print(state);
+                  return Icon(
                         state ? Icons.sunny : Icons.dark_mode,
                         color: Theme.of(context).colorScheme.onPrimary,
-                      ))),
+                      );
+                  } 
+                      
+                      )),
           InkWell(
             onTap: () {
               showDialog(
@@ -331,7 +338,7 @@ class _HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.all(8.0),
                       child: Align(
                           alignment: Alignment.centerLeft,
-                          child: Text("$dateClick",
+                          child: Text(dateClick,
                               style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -347,7 +354,7 @@ class _HomePageState extends State<HomePage> {
                           context: context,
                           builder: (context) => StatefulBuilder(
                             builder: (context, setState) {
-                              return Container(
+                              return SizedBox(
                                 height: 350,
                                 child: Padding(
                                   padding: const EdgeInsets.all(16.0),
@@ -364,7 +371,7 @@ class _HomePageState extends State<HomePage> {
                                                 .primary,
                                             fontWeight: FontWeight.bold),
                                       ),
-                                      SizedBox(height: 16),
+                                      const SizedBox(height: 16),
 
                                       // Filter Priority
                                       Text(
@@ -382,7 +389,7 @@ class _HomePageState extends State<HomePage> {
                                             selectedColor: Theme.of(context)
                                                 .colorScheme
                                                 .onTertiary,
-                                            label: Text("High"),
+                                            label: const Text("High"),
                                             selected:
                                                 selectedPriorityFilter == 'a',
                                             onSelected: (selected) {
@@ -397,7 +404,7 @@ class _HomePageState extends State<HomePage> {
                                             selectedColor: Theme.of(context)
                                                 .colorScheme
                                                 .onTertiary,
-                                            label: Text("Mid"),
+                                            label: const Text("Mid"),
                                             selected:
                                                 selectedPriorityFilter == 'b',
                                             onSelected: (selected) {
@@ -412,7 +419,7 @@ class _HomePageState extends State<HomePage> {
                                             selectedColor: Theme.of(context)
                                                 .colorScheme
                                                 .onTertiary,
-                                            label: Text("Low"),
+                                            label: const Text("Low"),
                                             selected:
                                                 selectedPriorityFilter == 'c',
                                             onSelected: (selected) {
@@ -424,12 +431,12 @@ class _HomePageState extends State<HomePage> {
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 16),
+                                     const SizedBox(height: 16),
                                       // Filter Status
                                       CheckboxListTile(
                                         title: Text(iscompledfilter
-                                            ? "Sudah Selesai"
-                                            : "Hanya yang belum selesai"),
+                                            ? "Already done"
+                                            : "Only, not done yet"),
                                         value: filterCompleted ?? false,
                                         onChanged: (value) {
                                           setState(() {
@@ -440,13 +447,13 @@ class _HomePageState extends State<HomePage> {
                                         },
                                       ),
 
-                                      Spacer(),
+                                     const Spacer(),
                                       Row(
                                         children: [
                                           ElevatedButton(
                                             style: ElevatedButton.styleFrom(
                                                 backgroundColor:
-                                                    Colors.red.shade100),
+                                                   Colors.red.shade100),
                                             onPressed: () {
                                               iscompledfilter = false;
                                               context.read<TodoBloc>().add(Filter(
@@ -462,7 +469,7 @@ class _HomePageState extends State<HomePage> {
                                                     color:
                                                         Colors.red.shade900)),
                                           ),
-                                          SizedBox(
+                                         const SizedBox(
                                             width: 10,
                                           ),
                                           ElevatedButton(
@@ -499,14 +506,14 @@ class _HomePageState extends State<HomePage> {
                           ),
                         );
                       },
-                      icon: Icon(Icons.filter_list),
+                      icon: const Icon(Icons.filter_list),
                       color: Theme.of(context).colorScheme.onPrimary,
                     )
                   ],
                 )),
 
             // fetch data
-            Container(
+            SizedBox(
                 height: 700,
                 child: auth.currentUser != null
                     ? BlocBuilder<TodoBloc, TodoState>(
@@ -558,44 +565,42 @@ class _HomePageState extends State<HomePage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Container(
-                                          child: BlocBuilder<ThemeCubit, bool>(
-                                            builder: (context, state) => Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                SvgPicture.asset(
-                                                    height: height * 0.30,
-                                                    width: width * 0.61,
-                                                    state
-                                                        ? 'assets/svg/no_white.svg'
-                                                        : 'assets/svg/no_dark.svg'),
-                                                Text(
-                                                  'No Matching Results Found',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      fontSize: 18,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .onPrimary),
-                                                ),
-                                                Text(
-                                                  'Make sure you typed the keyword correctly',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 15,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .onPrimary),
-                                                ),
-                                                const SizedBox(
-                                                  height: 50,
-                                                )
-                                              ],
-                                            ),
+                                        BlocBuilder<ThemeState, bool>(
+                                          builder: (context, state) => Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              SvgPicture.asset(
+                                                  height: height * 0.30,
+                                                  width: width * 0.61,
+                                                  state
+                                                      ? 'assets/svg/no_white.svg'
+                                                      : 'assets/svg/no_dark.svg'),
+                                              Text(
+                                                'No Matching Results Found',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.w700,
+                                                    fontSize: 18,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .onPrimary),
+                                              ),
+                                              Text(
+                                                'Make sure you typed the keyword correctly',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.w400,
+                                                    fontSize: 15,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .onPrimary),
+                                              ),
+                                              const SizedBox(
+                                                height: 50,
+                                              )
+                                            ],
                                           ),
                                         ),
                                         const SizedBox(
@@ -652,7 +657,7 @@ class _HomePageState extends State<HomePage> {
                                                 ),
                                               )),
                                             ),
-                                            Text(
+                                          const Text(
                                               'Filter is Empty\nTry Another Keywords!',
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
@@ -780,14 +785,14 @@ class _HomePageState extends State<HomePage> {
                                                                           context)
                                                                       .colorScheme
                                                                       .primary),
-                                                              'Hapus Item ini?'),
+                                                              'Delete this Item?'),
                                                           content: Text(
                                                               style: TextStyle(
                                                                   color: Theme.of(
                                                                           context)
                                                                       .colorScheme
                                                                       .primary),
-                                                              'Apakah Kamu Yakin Ingin Menghapus Item Ini?'),
+                                                              'Are you sure do you want to delete this Item?'),
                                                           actions: [
                                                             TextButton(
                                                                 onPressed: () {
@@ -797,7 +802,7 @@ class _HomePageState extends State<HomePage> {
                                                                           false);
                                                                 },
                                                                 child: const Text(
-                                                                    'Tidak')),
+                                                                    'Nope')),
                                                             TextButton(
                                                                 onPressed: () {
                                                                   Navigator.of(
@@ -820,13 +825,13 @@ class _HomePageState extends State<HomePage> {
                                                                               .floating,
                                                                           content:
                                                                               Text(
-                                                                            'Berhasil Menghapus Todo',
+                                                                            'Succesfully Deleted',
                                                                             style:
                                                                                 TextStyle(color: Theme.of(context).colorScheme.onError),
                                                                           )));
                                                                 },
                                                                 child: const Text(
-                                                                    'Ya, Hapus')),
+                                                                    'Yup, Deleted')),
                                                           ],
                                                         ),
                                                       );
@@ -937,7 +942,7 @@ class _HomePageState extends State<HomePage> {
                                                                           CrossAxisAlignment
                                                                               .start,
                                                                       children: [
-                                                                        SizedBox(
+                                                                        const SizedBox(
                                                                           height:
                                                                               10,
                                                                         ),
@@ -955,7 +960,7 @@ class _HomePageState extends State<HomePage> {
                                                                                 fontSize: 19),
                                                                           ),
                                                                         ),
-                                                                        SizedBox(
+                                                                        const SizedBox(
                                                                           height:
                                                                               0,
                                                                         ),
@@ -1020,7 +1025,7 @@ class _HomePageState extends State<HomePage> {
                                                                                     if (titleC.text.isNotEmpty || desC.text.isNotEmpty || rty.text.isNotEmpty) {
                                                                                       context.read<TodoBloc>().add(UpdateTodo(title: titleC.text, desc: desC.text, key: key, rty: rty.text));
                                                                                     } else {
-                                                                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating, duration: Durations.long3, content: Text('Please fill all Empty Fields')));
+                                                                                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(behavior: SnackBarBehavior.floating, duration: Durations.long3, content: Text('Please fill all Empty Fields')));
                                                                                     }
                                                                                   },
                                                                                   style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.onPrimary),
@@ -1051,29 +1056,27 @@ class _HomePageState extends State<HomePage> {
                                       child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Container(
-                                        child: BlocBuilder<ThemeCubit, bool>(
-                                          builder: (context, state) => Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              SvgPicture.asset(
-                                                  height: 220.0,
-                                                  width: 220.0,
-                                                  state
-                                                      ? 'assets/svg/add_white.svg'
-                                                      : 'assets/svg/add_dark.svg'),
-                                              Text(
-                                                'The Todo Is Empty \n Please  Add Some Work To do',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w700,
-                                                    fontSize: 18,
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .onPrimary),
-                                              )
-                                            ],
-                                          ),
+                                      BlocBuilder<ThemeState, bool>(
+                                        builder: (context, state) => Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            SvgPicture.asset(
+                                                height: 220.0,
+                                                width: 220.0,
+                                                state
+                                                    ? 'assets/svg/add_white.svg'
+                                                    : 'assets/svg/add_dark.svg'),
+                                            Text(
+                                              'The Todo Is Empty \n Please  Add Some Work To do',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 18,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onPrimary),
+                                            )
+                                          ],
                                         ),
                                       ),
                                       const SizedBox(
@@ -1087,8 +1090,8 @@ class _HomePageState extends State<HomePage> {
                           });
                         },
                       )
-                    : Center(
-                        child: Text('Login Untuk Melihat Data'),
+                    : const Center(
+                        child: Text('Login For See The Data'),
                       )),
           ],
         ),
@@ -1141,7 +1144,7 @@ class _HomePageState extends State<HomePage> {
                           behavior: SnackBarBehavior.floating,
                           content: Text("Were Update This Feature ASAP")));
                     },
-                    child: Icon(Icons.checklist_rtl_rounded),
+                    child: const Icon(Icons.checklist_rtl_rounded),
                   )
                 ],
               ),
@@ -1152,89 +1155,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-class MyText extends StatelessWidget {
-  String text;
-  MyText({
-    super.key,
-    required this.text,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-    );
-  }
-}
-
-class ContainerPriorty extends StatelessWidget {
-  String label;
-  String time;
-  bool status;
-  ContainerPriorty({
-    super.key,
-    required this.label,
-    required this.time,
-    required this.status,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          time,
-          style: TextStyle(
-              color: status != false
-                  ? Theme.of(context).colorScheme.onSecondary
-                  : Theme.of(context).colorScheme.onPrimary,
-              fontSize: 12,
-              fontWeight: FontWeight.bold),
-        ),
-        SizedBox(
-          height: 5,
-        ),
-        Container(
-          height: 20,
-          width: 40,
-          decoration: BoxDecoration(
-              border: Border.all(
-                  color: status != false
-                      ? Colors.transparent
-                      : Theme.of(context).colorScheme.onSurface),
-              color: Theme.of(context).colorScheme.primaryContainer,
-              borderRadius: BorderRadius.circular(5)),
-          child: Center(
-            child: Text(
-              label,
-              style: TextStyle(
-                  color: status != false
-                      ? Theme.of(context).colorScheme.onSecondary
-                      : Theme.of(context).colorScheme.onPrimary,
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-Color red = Colors.red;
-bool s = false;
 String? iselected;
-Widget buildPriorityWidget(String priority, String date, bool status) {
-  switch (priority.toLowerCase()) {
-    case 'c':
-      return ContainerPriorty(status: status, time: date, label: 'Low');
-    case 'b':
-      return ContainerPriorty(status: status, time: date, label: 'Mid');
-    case 'a':
-      return ContainerPriorty(status: status, time: date, label: 'High');
-    default:
-      return ContainerPriorty(status: status, time: '', label: '');
-  }
-}
+
+
+

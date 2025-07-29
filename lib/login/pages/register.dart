@@ -15,7 +15,7 @@ class RegisterPage extends StatelessWidget {
   RegisterPage({super.key});
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ThemeCubit, bool>(
+    return BlocBuilder<ThemeState, bool>(
       builder: (context, state) =>
        Scaffold(
          backgroundColor: state ? Colors.grey.shade200 : Colors.grey.shade800, 

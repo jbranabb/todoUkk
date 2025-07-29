@@ -33,7 +33,7 @@ class LoginPage extends StatelessWidget {
               content: Text(state.e)));
         }
       },
-      child: BlocBuilder<ThemeCubit, bool>(
+      child: BlocBuilder<ThemeState, bool>(
         builder: (context, state) => Scaffold(
           backgroundColor: state ? Colors.grey.shade200 : Colors.grey.shade800,
           body: Center(

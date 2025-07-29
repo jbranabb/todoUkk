@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo/bloc/bloc/daytim_bloc.dart';
 import 'package:todo/bloc/cuit/date_cubit.dart';
 import 'package:todo/bloc/cuit/search_cubit.dart';
@@ -15,20 +16,24 @@ import 'package:todo/myobserver.dart';
 import 'package:todo/theme.dart';
 import 'package:todo/todo/pages/home_page.dart';
 
+SharedPreferences? pref;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences initalPref =  await SharedPreferences.getInstance();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   Bloc.observer = Myobserver();
+    pref =  initalPref; 
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider(create: (context) => TodoBloc(),),
       BlocProvider(create: (context) => TodoCubit(),),
       BlocProvider(create: (context) => AuthBloc(),),
       BlocProvider(create: (context) => DaytimBloc(),),
-      BlocProvider(create: (context) => ThemeCubit(),),
       BlocProvider(create: (context) => DateCubit(),),
       BlocProvider(create: (context) => SearchCubit(),),
       BlocProvider(create: (context) => TextSearchCubit(),),
+      BlocProvider(create: (context) => ThemeToggle(),),
+      BlocProvider(create: (context) => ThemeState()..saveData(),),
     ],
     child: const MyApp()));
 }
@@ -39,7 +44,7 @@ class MyApp extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-         return BlocBuilder<ThemeCubit, bool> (
+         return BlocBuilder<ThemeState, bool> (
           builder: (context, state) => 
             MaterialApp(
               debugShowCheckedModeBanner: false,

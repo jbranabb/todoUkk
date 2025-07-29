@@ -92,6 +92,8 @@ class AddPage extends StatelessWidget {
                 controllerDesc.clear();
                 controllerRty.clear();
                 Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: 
+                Text('Succesfully Adding The Data', ), behavior: SnackBarBehavior.floating, duration: Durations.extralong2,));
               }
             },
             child: ElevatedButton(
