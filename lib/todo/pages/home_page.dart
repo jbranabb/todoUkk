@@ -221,8 +221,16 @@ class _HomePageState extends State<HomePage> {
                             labelStyle: TextStyle(
                                 color: Theme.of(context).colorScheme.onPrimary),
                             enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10)),
+                               borderSide: BorderSide(
+                                width: 1.5,
+                                color: Theme.of(context).colorScheme.secondary
+                              ),
+                                borderRadius: BorderRadius.circular(5)),
                             focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 2,
+                                color: Theme.of(context).colorScheme.onPrimary
+                              ),
                                 borderRadius: BorderRadius.circular(10)),
                           ),
                         ),
