@@ -9,7 +9,7 @@ class SearchCubit extends Cubit<bool>{
 
 class TextSearchCubit extends Cubit<String>{
   TextSearchCubit() : super('');
-  void hello(String text){ final lower = text.toLowerCase();
+  void search(String text){ final lower = text.toLowerCase();
   if (state != lower) {
     emit(lower);
     print('state skng : $lower');

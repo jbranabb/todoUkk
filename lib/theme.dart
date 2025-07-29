@@ -21,6 +21,9 @@ ThemeData light = ThemeData(
 
       inversePrimary: Colors.grey.shade900,
       onInverseSurface: Colors.grey.shade600,
+
+      //fab shadow
+      shadow: Colors.grey.shade300
     ));
 
 ThemeData dark = ThemeData(
@@ -44,4 +47,6 @@ ThemeData dark = ThemeData(
       // enabledBorder
       inversePrimary: Colors.grey.shade600,
       onInverseSurface: Colors.grey.shade300,
+      
+      shadow: Colors.grey.shade800
     ));

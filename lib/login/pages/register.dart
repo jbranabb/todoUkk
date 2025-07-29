@@ -18,12 +18,12 @@ class RegisterPage extends StatelessWidget {
     return BlocBuilder<ThemeState, bool>(
       builder: (context, state) =>
        Scaffold(
-         backgroundColor: state ? Colors.grey.shade200 : Colors.grey.shade800, 
+         backgroundColor: state ? Colors.grey.shade400 : Colors.grey.shade200, 
           body: Center(
             child: Card(
               // shadowColor: Colors.blue,
               
-              color: Theme.of(context).colorScheme.onSecondary.withOpacity(0.4),
+              color: Theme.of(context).colorScheme.onSecondary.withOpacity(0.2),
               child: SizedBox(
                 height: 540,
                 width: 300,
@@ -95,7 +95,7 @@ class RegisterPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           const Text(
-                            'Sudah Punya Akun?  ',
+                            'Already have a Account?  ',
                             style: TextStyle(color: Colors.grey),
                           ),
                           GestureDetector(

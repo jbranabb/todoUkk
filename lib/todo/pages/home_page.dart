@@ -213,7 +213,7 @@ class _HomePageState extends State<HomePage> {
                           autocorrect: false,
                           controller: searching,
                           onChanged: (value) {
-                            context.read<TextSearchCubit>().hello(value);
+                            context.read<TextSearchCubit>().search(value);
                           },
                           decoration: InputDecoration(
                             hintText: "Mau Cari Sesuatu?",
@@ -260,7 +260,6 @@ class _HomePageState extends State<HomePage> {
                                     child: AnimatedContainer(
                                       duration: Durations.long3,
                                       height: 45,
-                                      // color: Colors.blue,
                                       child: Center(
                                         child: Icon(
                                             Icons.edit_calendar_outlined,
@@ -278,48 +277,52 @@ class _HomePageState extends State<HomePage> {
                           },
                         ),
                         Expanded(
-                          child: GridView.builder(
-                            itemCount: dates.length,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 7,
-                                    childAspectRatio: 0.9,
-                                    crossAxisSpacing: 1,
-                                    mainAxisSpacing: 1),
-                            itemBuilder: (context, index) => Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    dateClick = dates[index];
-                                  });
-                                  print(dateClick);
-                                },
-                                child: Container(
-                                  height: 10,
-                                  width: 10,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    // color: dateClick == dates[index] ? Theme.of(context).colorScheme.secondary :Theme.of(context).colorScheme.primary ,
+                          child: Container(
+                            color: Theme.of(context).colorScheme.primary,
+                            child: GridView.builder(
+                              itemCount: dates.length,
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 7,
+                                      childAspectRatio: 0.9,
+                                      crossAxisSpacing: 1,
+                                      mainAxisSpacing: 1),
+                              itemBuilder: (context, index) => Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      dateClick = dates[index];
+                                    });
+                                    print(dateClick);
+                                  },
+                                  child: Container(
+                                    height: 10,
+                                    width: 10,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      // color: dateClick == dates[index] ? Theme.of(context).colorScheme.secondary :Theme.of(context).colorScheme.primary ,
+                                    ),
+                                    child: Center(
+                                        child: Text(
+                                      dates[index].substring(0, 6),
+                                      textAlign: TextAlign.center,
+                                      style: dateClick == dates[index]
+                                          ? TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimary)
+                                          : TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.normal,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimary),
+                                    )),
                                   ),
-                                  child: Center(
-                                      child: Text(
-                                    dates[index].substring(0, 6),
-                                    textAlign: TextAlign.center,
-                                    style: dateClick == dates[index]
-                                        ? TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onPrimary)
-                                        : TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.normal,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onPrimary),
-                                  )),
                                 ),
                               ),
                             ),
@@ -1110,7 +1113,7 @@ class _HomePageState extends State<HomePage> {
             height: 50,
             width: 200,
             decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.onSecondary,
+                color: Theme.of(context).colorScheme.shadow,
                 borderRadius: BorderRadius.circular(20)),
             child: Padding(
               padding: const EdgeInsets.all(8.0),

@@ -95,7 +95,7 @@ class LoginPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
-                            'Belum Punya Akun?  ',
+                            'Need an account? ',
                             style: TextStyle(
                                 color:
                                     Theme.of(context).colorScheme.onTertiary),
