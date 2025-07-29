@@ -1,4 +1,4 @@
-# ✅ TodoUkk
+# TodoUkk
 **TodoUkk** is a cross-platform mobile todo management app built with **Flutter**, using **Firebase** for backend services and **BLoC** for state management. It’s designed to help users manage their daily tasks, keep track of their note history, and stay productive — all in a sleek dark/light themed interface.
 
 ---
@@ -43,7 +43,7 @@ TodoUkk follows best practices in Flutter development:
 |----------------|------------------------------------------|
 | **UI**         | Built with Flutter widgets and layouts   |
 | **State Mgmt** | BLoC Pattern (flutter_bloc)              |
-| **Backend**    | Firebase (Auth + RealTimeDatabase)              |
+| **Backend**    | Firebase (Auth + RealTimeDatabase)       |
 | **Local**      | SharedPreferences for theme preferences  |
 | **Structure**  | Feature-based modular file organization  |
 
@@ -55,9 +55,9 @@ TodoUkk follows best practices in Flutter development:
 |----------------|-------------------------------------------|
 | Flutter        | Frontend framework                        |
 | Dart           | Programming language                      |
-| Firebase       | Backend (Auth & RealTimeDatabase)                |
+| Firebase       | Backend (Auth & RealTimeDatabase)         |
 | flutter_bloc   | State management                          |
-| SharedPreferences | Local theme persistence               |
+| SharedPreferences | Local theme persistence                |
 
 ---
 
