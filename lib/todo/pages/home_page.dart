@@ -212,6 +212,7 @@ class _HomePageState extends State<HomePage> {
                           cursorColor: Theme.of(context).colorScheme.onPrimary,
                           autocorrect: false,
                           controller: searching,
+                          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
                           onChanged: (value) {
                             context.read<TextSearchCubit>().search(value);
                           },
@@ -350,7 +351,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.symmetric(horizontal:  15.0, vertical: 8.0),
                       child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(dateClick,
@@ -623,11 +624,13 @@ class _HomePageState extends State<HomePage> {
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
                                               SvgPicture.asset(
-                                                  height: height * 0.30,
+                                                  height: height * 0.25,
                                                   width: width * 0.61,
                                                   state
-                                                      ? 'assets/svg/no_white.svg'
-                                                      : 'assets/svg/no_dark.svg'),
+                                                      ? 'assets/svg/no_dark.svg'
+                                                       :'assets/svg/no_white.svg'
+                                                      
+                                                      ),
                                               Text(
                                                 'No Matching Results Found',
                                                 textAlign: TextAlign.center,
@@ -708,10 +711,13 @@ class _HomePageState extends State<HomePage> {
                                                 ),
                                               )),
                                             ),
-                                            const Text(
+                                             Text(
                                               'Filter is Empty\nTry Another Keywords!',
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
+                                                  color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onPrimary,
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 16),
                                             ),

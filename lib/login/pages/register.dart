@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:todo/bloc/cuit/theme_cubit.dart';
 import 'package:todo/bloc/login/auth_bloc.dart';
 import 'package:todo/login/pages/login.dart';
@@ -145,9 +146,13 @@ class RegisterPage extends StatelessWidget {
                                       Theme.of(context).colorScheme.onPrimary,
                                 ), 
                               child:Container(
-                                    height: 10,
-                                    width: 45,
-                                    child: Icon(Icons.verified_user))
+                                height: 40,
+                                width: 45,
+                            child: Center(
+                              child: LottieBuilder.asset(
+                                      'assets/lottie/darkmode.json'),
+                            ),
+                          ),
                               ); 
                             }
                         return ElevatedButton(
