@@ -216,21 +216,23 @@ class _HomePageState extends State<HomePage> {
                             context.read<TextSearchCubit>().search(value);
                           },
                           decoration: InputDecoration(
-                            hintText: "Mau Cari Sesuatu?",
-                            labelText: "Pencarian",
+                            hintText: "Searching For Something?",
+                            labelText: "Searching",
                             labelStyle: TextStyle(
                                 color: Theme.of(context).colorScheme.onPrimary),
                             enabledBorder: OutlineInputBorder(
-                               borderSide: BorderSide(
-                                width: 1.5,
-                                color: Theme.of(context).colorScheme.secondary
-                              ),
+                                borderSide: BorderSide(
+                                    width: 1.5,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .secondary),
                                 borderRadius: BorderRadius.circular(5)),
                             focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                width: 2,
-                                color: Theme.of(context).colorScheme.onPrimary
-                              ),
+                                borderSide: BorderSide(
+                                    width: 2,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
                                 borderRadius: BorderRadius.circular(10)),
                           ),
                         ),
@@ -364,6 +366,8 @@ class _HomePageState extends State<HomePage> {
                     IconButton(
                       onPressed: () {
                         showModalBottomSheet(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primaryContainer,
                           isScrollControlled: true,
                           context: context,
                           builder: (context) => StatefulBuilder(
@@ -382,7 +386,7 @@ class _HomePageState extends State<HomePage> {
                                             fontSize: 18,
                                             color: Theme.of(context)
                                                 .colorScheme
-                                                .primary,
+                                                .onPrimary,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       const SizedBox(height: 16),
@@ -393,7 +397,7 @@ class _HomePageState extends State<HomePage> {
                                         style: TextStyle(
                                             color: Theme.of(context)
                                                 .colorScheme
-                                                .primary),
+                                                .onPrimary),
                                       ),
                                       Wrap(
                                         spacing: 8,
@@ -402,8 +406,17 @@ class _HomePageState extends State<HomePage> {
                                             checkmarkColor: Colors.green,
                                             selectedColor: Theme.of(context)
                                                 .colorScheme
-                                                .onTertiary,
-                                            label: const Text("High"),
+                                                .onSecondary,
+                                            backgroundColor: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface,
+                                            label: Text(
+                                              "High",
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onPrimary),
+                                            ),
                                             selected:
                                                 selectedPriorityFilter == 'a',
                                             onSelected: (selected) {
@@ -417,8 +430,17 @@ class _HomePageState extends State<HomePage> {
                                             checkmarkColor: Colors.green,
                                             selectedColor: Theme.of(context)
                                                 .colorScheme
-                                                .onTertiary,
-                                            label: const Text("Mid"),
+                                                .onSecondary,
+                                            backgroundColor: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface,
+                                            label: Text(
+                                              "Mid",
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onPrimary),
+                                            ),
                                             selected:
                                                 selectedPriorityFilter == 'b',
                                             onSelected: (selected) {
@@ -432,8 +454,17 @@ class _HomePageState extends State<HomePage> {
                                             checkmarkColor: Colors.green,
                                             selectedColor: Theme.of(context)
                                                 .colorScheme
-                                                .onTertiary,
-                                            label: const Text("Low"),
+                                                .onSecondary,
+                                            backgroundColor: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface,
+                                            label: Text(
+                                              "Low",
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onPrimary),
+                                            ),
                                             selected:
                                                 selectedPriorityFilter == 'c',
                                             onSelected: (selected) {
@@ -448,9 +479,17 @@ class _HomePageState extends State<HomePage> {
                                       const SizedBox(height: 16),
                                       // Filter Status
                                       CheckboxListTile(
+                                         activeColor:Theme.of(context).colorScheme.onPrimary ,
+                                         checkColor: Theme.of(context).colorScheme.primary,
+                                        side: BorderSide(
+                                          color:Theme.of(context).colorScheme.onPrimary,
+                                          width: 2
+                                        ),
                                         title: Text(iscompledfilter
-                                            ? "Already done"
-                                            : "Only, not done yet"),
+                                            ? "Completed"
+                                            : "Not completed yet",
+                                            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                                            ),
                                         value: filterCompleted ?? false,
                                         onChanged: (value) {
                                           setState(() {
@@ -1006,11 +1045,14 @@ class _HomePageState extends State<HomePage> {
                                                                                   padding: const EdgeInsets.all(15.0),
                                                                                   child: BlocListener<TodoBloc, TodoState>(
                                                                                     listener: (context, state) {
-                                                                                      if(state is Todoloaded){
-                                                                                     Navigator.of(context).pop();
-                                                                                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('SuccesFully  updating data'), behavior: SnackBarBehavior.floating,));
+                                                                                      if (state is Todoloaded) {
+                                                                                        Navigator.of(context).pop();
+                                                                                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                                                                          content: Text('SuccesFully  updating data'),
+                                                                                          behavior: SnackBarBehavior.floating,
+                                                                                        ));
                                                                                       }
-                                                                                     },
+                                                                                    },
                                                                                     child: ElevatedButton(
                                                                                         onPressed: () {
                                                                                           if (titleC.text.isNotEmpty || desC.text.isNotEmpty || rty.text.isNotEmpty) {
