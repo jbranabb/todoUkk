@@ -200,149 +200,177 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             BlocBuilder<SearchCubit, bool>(
-              builder: (context, state) {
-                if (state == true) {
-                  return AnimatedContainer(
-                    duration: Durations.long2,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 20.0),
-                      child: BlocBuilder<TextSearchCubit, String>(
-                        builder: (context, state) => TextField(
-                          cursorColor: Theme.of(context).colorScheme.onPrimary,
-                          autocorrect: false,
-                          controller: searching,
-                          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-                          onChanged: (value) {
-                            context.read<TextSearchCubit>().search(value);
-                          },
-                          decoration: InputDecoration(
-                            hintText: "Searching For Something?",
-                            labelText: "Searching",
-                            labelStyle: TextStyle(
-                                color: Theme.of(context).colorScheme.onPrimary),
-                            enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    width: 1.5,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .secondary),
-                                borderRadius: BorderRadius.circular(5)),
-                            focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    width: 2,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onPrimary),
-                                borderRadius: BorderRadius.circular(10)),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                }
-                return BlocBuilder<DateCubit, List<String>>(
-                    builder: (context, dates) {
-                  return AnimatedContainer(
-                    duration: Durations.long1,
-                    height: 50,
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary),
-                    child: Row(
-                      children: [
-                        BlocBuilder<DateCubit, List<String>>(
-                          builder: (context, state) {
-                            if (state
-                                .where((element) => element == date)
-                                .isNotEmpty) {
-                              return Container();
-                            }
-                            return Row(
-                              children: [
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        dateClick = date;
-                                      });
-                                    },
-                                    child: AnimatedContainer(
-                                      duration: Durations.long3,
-                                      height: 45,
-                                      child: Center(
-                                        child: Icon(
-                                            Icons.edit_calendar_outlined,
-                                            color: dateClick == date
-                                                ? Theme.of(context)
-                                                    .colorScheme
-                                                    .onPrimary
-                                                : Theme.of(context)
-                                                    .colorScheme
-                                                    .secondary),
-                                      ),
-                                    )),
-                              ],
-                            );
-                          },
-                        ),
-                        Expanded(
-                          child: Container(
-                            color: Theme.of(context).colorScheme.primary,
-                            child: GridView.builder(
-                              itemCount: dates.length,
-                              physics: const NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 7,
-                                      childAspectRatio: 0.9,
-                                      crossAxisSpacing: 1,
-                                      mainAxisSpacing: 1),
-                              itemBuilder: (context, index) => Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      dateClick = dates[index];
-                                    });
-                                    print(dateClick);
+              builder: (context, isSearchMore) {
+                return AnimatedSwitcher(
+                    duration: Durations.medium4,
+                    transitionBuilder: (child, animation) {
+                      return FadeTransition(opacity: animation, child: child,);
+                    },
+                    child: isSearchMore
+                        ? Container(
+                            key: const ValueKey('search_mode'),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 20.0),
+                              child: BlocBuilder<TextSearchCubit, String>(
+                                builder: (context, state) => TextField(
+                                  cursorColor:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                  autocorrect: false,
+                                  controller: searching,
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary),
+                                  onChanged: (value) {
+                                    context
+                                        .read<TextSearchCubit>()
+                                        .search(value);
                                   },
-                                  child: Container(
-                                    height: 10,
-                                    width: 10,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      // color: dateClick == dates[index] ? Theme.of(context).colorScheme.secondary :Theme.of(context).colorScheme.primary ,
-                                    ),
-                                    child: Center(
-                                        child: Text(
-                                      dates[index].substring(0, 6),
-                                      textAlign: TextAlign.center,
-                                      style: dateClick == dates[index]
-                                          ? TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onPrimary)
-                                          : TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onPrimary),
-                                    )),
+                                  decoration: InputDecoration(
+                                    hintText: "Searching For Something?",
+                                    labelText: "Searching",
+                                    labelStyle: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 1.5,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .secondary),
+                                        borderRadius: BorderRadius.circular(5)),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 2,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                });
+                          )
+                        : BlocBuilder<DateCubit, List<String>>(
+                            key: const ValueKey('date_mode'),
+                            builder: (context, dates) {
+                              return AnimatedContainer(
+                                height: isSearchMore ? 0 : height * 0.10,
+                                duration: Durations.long1,
+                                curve: Curves.easeInOut,
+                                // height: 5,
+                                decoration: BoxDecoration(
+                                    color:
+                                        Theme.of(context).colorScheme.primary),
+                                child: Row(
+                                  children: [
+                                    BlocBuilder<DateCubit, List<String>>(
+                                      builder: (context, state) {
+                                        if (state
+                                            .where((element) => element == date)
+                                            .isNotEmpty) {
+                                          return Container();
+                                        }
+                                        return Row(
+                                          children: [
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    dateClick = date;
+                                                  });
+                                                },
+                                                child: AnimatedContainer(
+                                                  duration: Durations.long3,
+                                                  height: 45,
+                                                  child: Center(
+                                                    child: Icon(
+                                                        Icons
+                                                            .edit_calendar_outlined,
+                                                        color: dateClick == date
+                                                            ? Theme.of(context)
+                                                                .colorScheme
+                                                                .onPrimary
+                                                            : Theme.of(context)
+                                                                .colorScheme
+                                                                .secondary),
+                                                  ),
+                                                )),
+                                          ],
+                                        );
+                                      },
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                        child: GridView.builder(
+                                          itemCount: dates.length,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          gridDelegate:
+                                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                                  crossAxisCount: 7,
+                                                  childAspectRatio: 0.9,
+                                                  crossAxisSpacing: 1,
+                                                  mainAxisSpacing: 1),
+                                          itemBuilder: (context, index) =>
+                                              Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  dateClick = dates[index];
+                                                });
+                                                print(dateClick);
+                                              },
+                                              child: Container(
+                                                height: 10,
+                                                width: 10,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  // color: dateClick == dates[index] ? Theme.of(context).colorScheme.secondary :Theme.of(context).colorScheme.primary ,
+                                                ),
+                                                child: Center(
+                                                    child: Text(
+                                                  dates[index].substring(0, 6),
+                                                  textAlign: TextAlign.center,
+                                                  style: dateClick ==
+                                                          dates[index]
+                                                      ? TextStyle(
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .onPrimary)
+                                                      : TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .onPrimary),
+                                                )),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }));
               },
             ),
             SizedBox(
@@ -351,7 +379,8 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal:  15.0, vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15.0, vertical: 8.0),
                       child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(dateClick,
@@ -480,17 +509,26 @@ class _HomePageState extends State<HomePage> {
                                       const SizedBox(height: 16),
                                       // Filter Status
                                       CheckboxListTile(
-                                         activeColor:Theme.of(context).colorScheme.onPrimary ,
-                                         checkColor: Theme.of(context).colorScheme.primary,
+                                        activeColor: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary,
+                                        checkColor: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
                                         side: BorderSide(
-                                          color:Theme.of(context).colorScheme.onPrimary,
-                                          width: 2
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary,
+                                            width: 2),
+                                        title: Text(
+                                          iscompledfilter
+                                              ? "Completed"
+                                              : "Not completed yet",
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimary),
                                         ),
-                                        title: Text(iscompledfilter
-                                            ? "Completed"
-                                            : "Not completed yet",
-                                            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-                                            ),
                                         value: filterCompleted ?? false,
                                         onChanged: (value) {
                                           setState(() {
@@ -628,9 +666,7 @@ class _HomePageState extends State<HomePage> {
                                                   width: width * 0.61,
                                                   state
                                                       ? 'assets/svg/no_dark.svg'
-                                                       :'assets/svg/no_white.svg'
-                                                      
-                                                      ),
+                                                      : 'assets/svg/no_white.svg'),
                                               Text(
                                                 'No Matching Results Found',
                                                 textAlign: TextAlign.center,
@@ -711,13 +747,13 @@ class _HomePageState extends State<HomePage> {
                                                 ),
                                               )),
                                             ),
-                                             Text(
+                                            Text(
                                               'Filter is Empty\nTry Another Keywords!',
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                   color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onPrimary,
+                                                      .colorScheme
+                                                      .onPrimary,
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 16),
                                             ),
