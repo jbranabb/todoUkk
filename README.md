@@ -83,11 +83,11 @@ TodoUkk follows best practices in Flutter development:
 6. Switches theme between dark and light via settings.
 
 ---
-
-![Home Page](assets/screenshoot/2.jpg) ![Home Page Dark Mode](assets/screenshoot/1.jpg)
-![Home Page](assets/screenshoot/1.jpg)
-<!-- ![Home Page](assets/screenshoot/1.jpg)
-![Home Page](assets/screenshoot/1.jpg) -->
+<p align="center">
+  <img src="assets/screenshoot/2.jpg" alt="Home Page" width="45%"/>
+  &nbsp;
+  <img src="assets/screenshoot/1.jpg" alt="Dark Mode" width="45%"/>
+</p>
 
 
 ## 🛠️ How to Run
