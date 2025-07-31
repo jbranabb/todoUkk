@@ -117,10 +117,11 @@ class _HomePageState extends State<HomePage> {
                     ElevatedButton(
                         onPressed: () {
                           context.read<AuthBloc>().add(LogOut());
-                          Navigator.of(context)
-                              .pushReplacement(MaterialPageRoute(
+                          Navigator.of(context, rootNavigator: true)
+                              .pushAndRemoveUntil(
+                                MaterialPageRoute(
                             builder: (context) => LoginPage(),
-                          ));
+                          ), (route) => false,);
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor:
@@ -307,6 +308,7 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                     Expanded(
                                       child: Container(
+                                        height: height * 0.08,
                                         color: Theme.of(context)
                                             .colorScheme
                                             .primary,
