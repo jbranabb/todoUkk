@@ -83,11 +83,50 @@ TodoUkk follows best practices in Flutter development:
 6. Switches theme between dark and light via settings.
 
 ---
+
+<h3>Login Page & Register Page</h3>
 <p align="center">
-  <img src="assets/screenshoot/2.jpg" alt="Home Page" width="45%"/>
+  <img src="assets/screenshoot/12.jpg" alt="History Page" width="45%"/>
+  &nbsp;
+  <img src="assets/screenshoot/13.jpg" alt="Dark Mode" width="45%"/>
+</p>
+
+---
+
+<h3>Home Page </h3>
+<p align="center">
+  <img src="assets/screenshoot/3.jpg" alt="Home Page" width="45%"/>
+  &nbsp;
+  <img src="assets/screenshoot/4.jpg" alt="Dark Mode" width="45%"/>
+</p>
+
+---
+
+
+<h3>History Page </h3>
+<p align="center">
+  <img src="assets/screenshoot/2.jpg" alt="History Page" width="45%"/>
   &nbsp;
   <img src="assets/screenshoot/1.jpg" alt="Dark Mode" width="45%"/>
 </p>
+
+---
+<h3>Filter Section & Filter Page (results) </h3>
+<p align="center">
+  <img src="assets/screenshoot/8.jpg" alt="History Page" width="45%"/>
+  &nbsp;
+  <img src="assets/screenshoot/9.jpg" alt="Dark Mode" width="45%"/>
+</p>
+
+---
+<h3>Not Found Filtter & Seaching </h3>
+<p align="center">
+  <img src="assets/screenshoot/10.jpg" alt="History Page" width="45%"/>
+  &nbsp;
+  <img src="assets/screenshoot/11.jpg" alt="Dark Mode" width="45%"/>
+</p>
+
+---
 
 
 ## 🛠️ How to Run
